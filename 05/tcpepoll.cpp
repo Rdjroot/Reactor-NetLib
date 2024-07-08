@@ -15,9 +15,12 @@
 #include <sys/fcntl.h>
 #include <sys/epoll.h>
 #include <netinet/tcp.h> // TCP_NODELAY需要包含这个头文件。
+#include <functional>
 #include "Socket.h"
 #include "InetAddress.h"
 #include "Epoll.h"
+#include "Channel.h"
+
 
 using std::cerr;
 using std::cin;
@@ -42,16 +45,18 @@ int main(int argc, char *argv[])
 
     // 服务端的地址和协议
     InetAddress servaddr(argv[1], atoi(argv[2]));
-    servsock.bind(servaddr);
-    servsock.listen();
+    servsock.bind(servaddr);    // 绑定ip和端口  
+    servsock.listen();          // 开启监听
 
-    Epoll ep;
-    ep.addfd(servsock.fd(), EPOLLIN);
-    std::vector<epoll_event> evs;
+    Epoll ep;    
+    Channel *servchannel = new Channel(&ep, servsock.fd());
+    servchannel->setreadcallback(std::bind(&Channel::newconnection,servchannel,&servsock));
+    // 监听读事件
+    servchannel->enablereading();
 
     while (true) // 事件循环。
     {
-        evs = ep.loop();
+        std::vector<Channel *> channels=ep.loop();         // 等待监视的fd有事件发生。
 
         // 如果infds>0，表示有事件发生的fd的数量。
         for (auto &ev: evs) // 遍历epoll返回的数组evs。

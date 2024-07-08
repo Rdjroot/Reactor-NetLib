@@ -1,4 +1,6 @@
-#pragma once
+#ifndef SOCKET_H_ 
+#define SOCKET_H_ 
+
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/tcp.h>
@@ -12,6 +14,7 @@
 int createnonblocking();
 
 // Socket类
+// 主管Socket的属性设置和连接
 class Socket
 {
 private:
@@ -31,3 +34,5 @@ public:
     void bind(const InetAddress &servaddr); // 服务端socket调用，绑定fd和ip端口协议等属性
     int accept(InetAddress &clientaddr);    // 接受新的客户端连接
 };
+
+#endif // SOCKET_H_ 

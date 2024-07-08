@@ -1,8 +1,11 @@
-#pragma once
+#ifndef INETADDRESS_H_
+#define INETADDRESS_H_
+
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <string>
 
+// 封装sockaddr_in的数据结构（含ip端口绑定、协议等）
 class InetAddress
 {
 private:
@@ -19,3 +22,5 @@ public:
     const sockaddr *addr() const;         // 返回addr_成员函数转换的sockaddr结构体
     void setaddr(sockaddr_in clientaddr); // 设置addr_成员的值
 };
+
+# endif
