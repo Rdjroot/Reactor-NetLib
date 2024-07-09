@@ -3,11 +3,11 @@
 using std::cerr;
 using std::endl;
 
-// ´´½¨·Ç×èÈûµÄ¼àÌısocket
+// åˆ›å»ºéé˜»å¡çš„ç›‘å¬socket
 int createnonblocking()
 {
-    // ´´½¨·şÎñ¶ËÓÃÓÚ¼àÌıµÄlistenfd¡£
-    // Ìí¼Ó`SOCK_NONBLOCK`ÊôĞÔ£¬ÈÃlistenfd±äÎª·Ç×èÈûµÄ¡£
+    // åˆ›å»ºæœåŠ¡ç«¯ç”¨äºç›‘å¬çš„listenfdã€‚
+    // æ·»åŠ `SOCK_NONBLOCK`å±æ€§ï¼Œè®©listenfdå˜ä¸ºéé˜»å¡çš„ã€‚
     int listenfd = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, IPPROTO_TCP);
     if (listenfd < 0)
     {
@@ -23,48 +23,58 @@ Socket::~Socket()
     close(fd_);
 }
 
-// ·µ»Øfd³ÉÔ±
+// è¿”å›fdæˆå‘˜
 int Socket::fd() const
 {
     return fd_;
 }
 
-// ½ûÓÃNagleËã·¨£¬Á¢¼´·¢ËÍĞ¡Êı¾İ°ü
-// ¶ÔÊµÊ±ĞÔÒªÇó¸ßµÄÓ¦ÓÃÖĞÊ¹ÓÃ
-// ÔÚ±¾Ä£ĞÍÖĞ±ØĞë°üº¬
+std::string Socket::ip() const
+{
+    return ip_;
+}
+
+uint16_t Socket::port() const
+{
+    return port_;
+}
+
+// ç¦ç”¨Nagleç®—æ³•ï¼Œç«‹å³å‘é€å°æ•°æ®åŒ…
+// å¯¹å®æ—¶æ€§è¦æ±‚é«˜çš„åº”ç”¨ä¸­ä½¿ç”¨
+// åœ¨æœ¬æ¨¡å‹ä¸­å¿…é¡»åŒ…å«
 void Socket::settcpnodelay(bool on)
 {
     int optval = on ? 1 : 0;
-    ::setsockopt(fd_, IPPROTO_TCP, TCP_NODELAY, &optval, sizeof(optval)); // TCP_NODELAY°üº¬Í·ÎÄ¼ş <netinet/tcp.h>
+    ::setsockopt(fd_, IPPROTO_TCP, TCP_NODELAY, &optval, sizeof(optval)); // TCP_NODELAYåŒ…å«å¤´æ–‡ä»¶ <netinet/tcp.h>
 }
 
-// ÔÊĞíÖØĞÂ°ó¶¨´¦ÓÚ`time_wait`×´Ì¬µÄµØÖ·¡£
-// Ò²¾ÍÊÇÎŞÊÓ·şÎñÆ÷Á¬½Ó¶Ï¿ªµÄ2MSL
-// ÔÚ±¾Ä£ĞÍÖĞ±ØĞë°üº¬
+// å…è®¸é‡æ–°ç»‘å®šå¤„äº`time_wait`çŠ¶æ€çš„åœ°å€ã€‚
+// ä¹Ÿå°±æ˜¯æ— è§†æœåŠ¡å™¨è¿æ¥æ–­å¼€çš„2MSL
+// åœ¨æœ¬æ¨¡å‹ä¸­å¿…é¡»åŒ…å«
 void Socket::setreuseaddr(bool on)
 {
     int optval = on ? 1 : 0;
     ::setsockopt(fd_, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval));
 }
 
-// ÔÊĞí¶à¸öÌ×½Ó×Ö°ó¶¨µ½Í¬Ò»¸ö¶Ë¿Ú
-// ¶à¸ö½ø³Ì¿ÉÒÔ¼àÌıÍ¬Ò»¸ö¶Ë¿Ú
-// ÓĞÓÃ£¬µ«ÒâÒå²»´ó
+// å…è®¸å¤šä¸ªå¥—æ¥å­—ç»‘å®šåˆ°åŒä¸€ä¸ªç«¯å£
+// å¤šä¸ªè¿›ç¨‹å¯ä»¥ç›‘å¬åŒä¸€ä¸ªç«¯å£
+// æœ‰ç”¨ï¼Œä½†æ„ä¹‰ä¸å¤§
 void Socket::setreuseport(bool on)
 {
     int optval = on ? 1 : 0;
     ::setsockopt(fd_, SOL_SOCKET, SO_REUSEPORT, &optval, sizeof(optval));
 }
 
-// ÆôÓÃ TCP ±£³Ö»î¶¯Á¬½Ó¼ì²â¡£TCP»áÖÜÆÚĞÔ·¢ËÍÌ½²âÏûÏ¢£¬ÒÔÈ·±£Á¬½ÓÊ±»î¶¯µÄ
-// ¿ÉÄÜÓĞÓÃ£¬µ«½¨Òé×Ô¼º×öĞÄÌø
+// å¯ç”¨ TCP ä¿æŒæ´»åŠ¨è¿æ¥æ£€æµ‹ã€‚TCPä¼šå‘¨æœŸæ€§å‘é€æ¢æµ‹æ¶ˆæ¯ï¼Œä»¥ç¡®ä¿è¿æ¥æ—¶æ´»åŠ¨çš„
+// å¯èƒ½æœ‰ç”¨ï¼Œä½†å»ºè®®è‡ªå·±åšå¿ƒè·³
 void Socket::setkeepalive(bool on)
 {
     int optval = on ? 1 : 0;
     ::setsockopt(fd_, SOL_SOCKET, SO_KEEPALIVE, &optval, sizeof(optval));
 }
 
-// ½«½á¹¹ÌåºÍ¼àÌıfd°ó¶¨
+// å°†ç»“æ„ä½“å’Œç›‘å¬fdç»‘å®š
 void Socket::bind(const InetAddress &servaddr)
 {
     if (::bind(fd_, servaddr.addr(), sizeof(servaddr)) < 0)
@@ -73,11 +83,13 @@ void Socket::bind(const InetAddress &servaddr)
         close(fd_);
         exit(-1);
     }
+    ip_ = servaddr.ip();
+    port_ = servaddr.port();
 }
 
 void Socket::listen(int nn)
 {
-    if (::listen(fd_, nn) != 0) // ÔÚ¸ß²¢·¢µÄÍøÂç·şÎñÆ÷ÖĞ£¬µÚ¶ş¸ö²ÎÊıÒª´óÒ»Ğ©¡£
+    if (::listen(fd_, nn) != 0) // åœ¨é«˜å¹¶å‘çš„ç½‘ç»œæœåŠ¡å™¨ä¸­ï¼Œç¬¬äºŒä¸ªå‚æ•°è¦å¤§ä¸€äº›ã€‚
     {
         cerr << "listen() failed" << endl;
         close(fd_);
@@ -90,11 +102,12 @@ int Socket::accept(InetAddress &clientaddr)
     sockaddr_in peeraddr;
     socklen_t len = sizeof(peeraddr);
 
-    // accept4()º¯ÊıÊÇLinux 2.6.28Ö®ºóĞÂÔöµÄº¯Êı£¬ÓÃÓÚÌæ´úaccept()º¯Êı¡£
-    // Ìí¼ÓSOCK_NONBLOCK£¬ÈÃclientfd±äÎª·Ç×èÈûµÄ¡£
+    // accept4()å‡½æ•°æ˜¯Linux 2.6.28ä¹‹åæ–°å¢çš„å‡½æ•°ï¼Œç”¨äºæ›¿ä»£accept()å‡½æ•°ã€‚
+    // æ·»åŠ SOCK_NONBLOCKï¼Œè®©clientfdå˜ä¸ºéé˜»å¡çš„ã€‚
     int clientfd = accept4(fd_, (struct sockaddr *)&peeraddr, &len, SOCK_NONBLOCK);
 
-    clientaddr.setaddr(peeraddr); // ¿Í»§¶Ë
-
+    clientaddr.setaddr(peeraddr); // å®¢æˆ·ç«¯
+    ip_ = clientaddr.ip();
+    port_ = clientaddr.port();
     return clientfd;
 }

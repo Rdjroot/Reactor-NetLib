@@ -1,24 +1,24 @@
 #include "Acceptor.h"
 
-Acceptor::Acceptor(EventLoop *loop, const std::string &ip, const uint16_t port):loop_(loop)
+Acceptor::Acceptor(EventLoop *loop, const std::string &ip, const uint16_t port) : loop_(loop)
 {
-    // ´´½¨·Ç×èÈûµÄ¼àÌýsocket
+    // åˆ›å»ºéžé˜»å¡žçš„ç›‘å¬socket
     servsock_ = new Socket(createnonblocking());
 
-    // ÉèÖÃÒ»Ð©Ìá¸ßÐÔÄÜµÄÊôÐÔ
+    // è®¾ç½®ä¸€äº›æé«˜æ€§èƒ½çš„å±žæ€§
     servsock_->setkeepalive(true);
     servsock_->setreuseaddr(true);
     servsock_->setreuseport(true);
     servsock_->settcpnodelay(true);
 
-    // ·þÎñ¶ËµÄµØÖ·ºÍÐ­Òé
+    // æœåŠ¡ç«¯çš„åœ°å€å’Œåè®®
     InetAddress servaddr(ip, port);
-    servsock_->bind(servaddr); // °ó¶¨ipºÍ¶Ë¿Ú
-    servsock_->listen();       // ¿ªÆô¼àÌý
+    servsock_->bind(servaddr); // ç»‘å®šipå’Œç«¯å£
+    servsock_->listen();       // å¼€å¯ç›‘å¬
 
     acceptchannel_ = new Channel(loop_, servsock_->fd());
-    acceptchannel_->setreadcallback(std::bind(&Channel::newconnection, acceptchannel_, servsock_));
-    // °Ñch¼ÓÈëepoll¾ä±úÖÐ£¬¼àÌý¶ÁÊÂ¼þ
+    acceptchannel_->setreadcallback(std::bind(&Acceptor::newconnection, this));
+    // æŠŠchåŠ å…¥epollå¥æŸ„ä¸­ï¼Œç›‘å¬è¯»äº‹ä»¶
     acceptchannel_->enablereading();
 }
 
@@ -26,4 +26,22 @@ Acceptor::~Acceptor()
 {
     delete servsock_;
     delete acceptchannel_;
+}
+
+void Acceptor::newconnection()
+{
+    InetAddress clientaddr;
+
+    // è¿”å›žæ–°çš„å®¢æˆ·ç«¯çš„è¿žæŽ¥ï¼Œåœ¨acceptä¸­è®¾ç½®æˆäº†éžé˜»å¡žçš„
+    Socket *clientsock = new Socket(servsock_->accept(clientaddr));
+    // std::cout << "00000accept  ip=" << clientaddr->ip()
+    //           << ", port=" << clientaddr->port() << ") ok." << std::endl;
+    // std::cout << "1111accept client(fd=" << clientsock->fd() << ", ip=" << clientsock->ip()
+    //           << ", port=" << clientsock->port() << ") ok." << std::endl;
+    newconnectioncb_(clientsock);
+}
+
+void Acceptor::setnewconnectioncb(std::function<void(Socket *)> fn)
+{
+    newconnectioncb_ = fn;
 }

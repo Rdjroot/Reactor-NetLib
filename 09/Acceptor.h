@@ -1,24 +1,28 @@
 #ifndef ACCEPTOR_H_
 #define ACCEPTOR_H_
 
-#include<functional>
+#include <functional>
 #include "InetAddress.h"
 #include "Socket.h"
 #include "Channel.h"
 #include "EventLoop.h"
+#include "Connection.h"
+#include <iostream>
 
 class Acceptor
 {
 private:
     /* data */
-    EventLoop *loop_;        // Acceptor¶ÔÓ¦µÄÊÂ¼şÑ­»·£¬´Ó¹¹Ôìº¯Êı´«Èë£¬Ê¹ÓÃµ«²»ÓµÓĞ
-    Socket *servsock_;       // ·şÎñ¶ËÓÃÓÚ¼àÌıµÄsocket
-    Channel *acceptchannel_;    // ¶ÔÓ¦µÄChannel£¬ÔÚ¹¹Ôìº¯ÊıÖĞ´´½¨
+    EventLoop *loop_;                               // Acceptorå¯¹åº”çš„äº‹ä»¶å¾ªç¯ï¼Œä»æ„é€ å‡½æ•°ä¼ å…¥ï¼Œä½¿ç”¨ä½†ä¸æ‹¥æœ‰
+    Socket *servsock_;                              // æœåŠ¡ç«¯ç”¨äºç›‘å¬çš„socket
+    Channel *acceptchannel_;                        // å¯¹åº”çš„Channelï¼Œåœ¨æ„é€ å‡½æ•°ä¸­åˆ›å»º
+    std::function<void(Socket *)> newconnectioncb_; // å¤„ç†å®¢æˆ·ç«¯è¯·æ±‚è¿æ¥çš„å›è°ƒå‡½æ•°
 public:
     Acceptor(EventLoop *loop, const std::string &ip, const uint16_t port);
     ~Acceptor();
+
+    void newconnection();                   // å¤„ç†å®¢æˆ·ç«¯çš„æ–°è¯·æ±‚
+    void setnewconnectioncb(std::function<void(Socket *)> fn);
 };
-
-
 
 #endif

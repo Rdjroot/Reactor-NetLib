@@ -5,30 +5,38 @@
 #include <unistd.h>
 #include <string>
 #include <errno.h>
-#include <cstdlib> // Ê¹ÓÃ <cstdlib> Ìæ´ú <stdlib.h>£¬ÒòÎªÕâÊÇ C++ ±ê×¼¿âÖĞµÄÍ·ÎÄ¼ş
+#include <cstdlib> // ä½¿ç”¨ <cstdlib> æ›¿ä»£ <stdlib.h>ï¼Œå› ä¸ºè¿™æ˜¯ C++ æ ‡å‡†åº“ä¸­çš„å¤´æ–‡ä»¶
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <arpa/inet.h>
 #include <sys/fcntl.h>
 #include <sys/epoll.h>
-#include <netinet/tcp.h> // TCP_NODELAYĞèÒª°üº¬Õâ¸öÍ·ÎÄ¼ş¡£
+#include <netinet/tcp.h> // TCP_NODELAYéœ€è¦åŒ…å«è¿™ä¸ªå¤´æ–‡ä»¶ã€‚
 #include <functional>
 #include "InetAddress.h"
 #include "Socket.h"
 #include "Channel.h"
 #include "EventLoop.h"
 #include "Acceptor.h"
+#include "Connection.h"
+#include <map>
 
 class TcpServer
 {
 private:
     EventLoop loop_;
-    Acceptor *acceptor_;     // Ò»¸öTcpServerÖ»ÄÜÓĞÒ»¸öacceptor¶ÔÏó
+    Acceptor *acceptor_;                // ä¸€ä¸ªTcpServeråªèƒ½æœ‰ä¸€ä¸ªacceptorå¯¹è±¡
+    std::map<int, Connection *> conns_; // ä¸€ä¸ªTcpServeræœ‰å¤šä¸ªConnectionå¯¹è±¡
+
 public:
     TcpServer(const std::string &ip, uint16_t port);
     ~TcpServer();
 
     void start();
+
+    void newconnection(Socket *clientsock);
+    void closeconnection(Connection *conn); // å…³é—­å®¢æˆ·ç«¯è¿æ¥ï¼Œå›è°ƒå‡½æ•°
+    void errorconnection(Connection *conn); 
 };
 
 #endif

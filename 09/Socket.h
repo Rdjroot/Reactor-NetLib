@@ -10,29 +10,32 @@
 #include "InetAddress.h"
 #include <iostream>
 
-// ´´½¨Ò»¸ö·Ç×èÈûµÄfd
+// åˆ›å»ºä¸€ä¸ªéé˜»å¡çš„fd
 int createnonblocking();
 
-// SocketÀà
-// Ö÷¹ÜSocketµÄÊôĞÔÉèÖÃºÍÁ¬½Ó
+// Socketç±»
+// ä¸»ç®¡Socketçš„å±æ€§è®¾ç½®å’Œè¿æ¥
 class Socket
 {
 private:
-    const int fd_; // ¿ØÖÆsocketµÄÎÄ¼şÃèÊö·û
-
+    const int fd_;          // æ§åˆ¶socketçš„æ–‡ä»¶æè¿°ç¬¦
+    std::string ip_;            // å¦‚æœæ˜¯listenfdï¼Œå­˜æ”¾æœåŠ¡ç«¯ç›‘å¬çš„fdï¼Œå¦‚æœæ˜¯å®¢æˆ·ç«¯è¿æ¥çš„fdï¼Œå­˜æ”¾å¯¹ç«¯çš„fd
+    uint16_t port_;
 public:
-    Socket(int fd); // ´«ÈëÒ»¸öÒÑ×¼±¸ºÃµÄfd
+    Socket(int fd); // ä¼ å…¥ä¸€ä¸ªå·²å‡†å¤‡å¥½çš„fd
     ~Socket();
 
-    int fd() const;              // ·µ»Øfd³ÉÔ±±äÁ¿
-    void setreuseaddr(bool on);  // ÉèÖÃSO_REUSEADDR,ÔÊĞíÖØĞÂ°ó¶¨´¦ÓÚ`time_wait`×´Ì¬µÄµØÖ·¡£
-    void setreuseport(bool on);  // ÉèÖÃSO_REUSEPORT£¬ ÔÊĞí¶à¸öÌ×½Ó×Ö°ó¶¨µ½Í¬Ò»¶Ë¿Ú
-    void settcpnodelay(bool on); // ÉèÖÃTCP_NODELAY Ñ¡Ïî£¬ÊÇ·ñ½ûÓÃNagleËã·¨
-    void setkeepalive(bool on);  // ÉèÖÃSO_KEEPALIVE,£¨TCPÖÜÆÚĞÔ·¢ËÍÌ½²âÏûÏ¢£©
+    int fd() const;              // è¿”å›fdæˆå‘˜å˜é‡
+    std::string ip() const;
+    uint16_t port() const;
+    void setreuseaddr(bool on);  // è®¾ç½®SO_REUSEADDR,å…è®¸é‡æ–°ç»‘å®šå¤„äº`time_wait`çŠ¶æ€çš„åœ°å€ã€‚
+    void setreuseport(bool on);  // è®¾ç½®SO_REUSEPORTï¼Œ å…è®¸å¤šä¸ªå¥—æ¥å­—ç»‘å®šåˆ°åŒä¸€ç«¯å£
+    void settcpnodelay(bool on); // è®¾ç½®TCP_NODELAY é€‰é¡¹ï¼Œæ˜¯å¦ç¦ç”¨Nagleç®—æ³•
+    void setkeepalive(bool on);  // è®¾ç½®SO_KEEPALIVE,ï¼ˆTCPå‘¨æœŸæ€§å‘é€æ¢æµ‹æ¶ˆæ¯ï¼‰
 
-    void listen(int nn = 128);              // ¼àÌıº¯Êı
-    void bind(const InetAddress &servaddr); // ·şÎñ¶Ësocketµ÷ÓÃ£¬°ó¶¨fdºÍip¶Ë¿ÚĞ­ÒéµÈÊôĞÔ
-    int accept(InetAddress &clientaddr);    // ½ÓÊÜĞÂµÄ¿Í»§¶ËÁ¬½Ó
+    void listen(int nn = 128);              // ç›‘å¬å‡½æ•°
+    void bind(const InetAddress &servaddr); // æœåŠ¡ç«¯socketè°ƒç”¨ï¼Œç»‘å®šfdå’Œipç«¯å£åè®®ç­‰å±æ€§
+    int accept(InetAddress &clientaddr);    // æ¥å—æ–°çš„å®¢æˆ·ç«¯è¿æ¥
 };
 
 #endif // SOCKET_H_ 

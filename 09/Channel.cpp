@@ -69,9 +69,7 @@ void Channel::handleevent()
     // EPOLLRDHUP 表示对端关闭连接或半关闭。
     if (revents_ & EPOLLRDHUP)
     {
-        cout << "client(eventfd=" << fd_ << ") disconnected.\n";
-        // 关闭该客户端的fd。
-        close(fd_);
+        closecallback_();
     }
     //  EPOLLIN 普通数据  EPOLLPRI带外数据
     else if (revents_ & (EPOLLIN | EPOLLPRI)) // 接收缓冲区中有数据可以读。
@@ -85,27 +83,11 @@ void Channel::handleevent()
     }
     else // 其它事件，都视为错误。
     {
-        cout << "client(eventfd=" << fd_ << ") error." << endl;
-        close(fd_); // 关闭客户端的fd。
+        errorcallback_();
     }
 }
 
-void Channel::newconnection(Socket *servsock)
-{
-    InetAddress clientaddr;
 
-    // 返回新的客户端的连接，在accept中设置成了非阻塞的
-    Socket *clientsock = new Socket(servsock->accept(clientaddr));
-
-    cout << "accept client(fd=" << clientsock->fd() << ", ip=" << clientaddr.ip() << ", port=" << clientaddr.port() << ") ok." << endl;
-
-    // 为新客户端连接准备读事件和属性设置，并添加到epoll中。
-    Channel *clientchannel = new Channel(loop_, clientsock->fd());
-    // 绑定回调函数
-    clientchannel->setreadcallback(std::bind(&Channel::onmessage, clientchannel));
-    clientchannel->useet();         // 设置边缘触发，
-    clientchannel->enablereading(); // 将新的客户端fd的读事件添加到epoll中
-}
 
 void Channel::onmessage()
 {
@@ -134,8 +116,7 @@ void Channel::onmessage()
         }
         else if (nread == 0) // 客户端连接已断开。
         {
-            cout << "client(eventfd=" << fd_ << ") disconnected." << endl;
-            close(fd_); // 关闭客户端的fd。
+            closecallback_();
             break;
         }
     }
@@ -144,4 +125,14 @@ void Channel::onmessage()
 void Channel::setreadcallback(std::function<void()> fn)
 {
     readcallback_ = fn;
+}
+
+void Channel::setclosecallback(std::function<void()> fn)
+{
+    closecallback_ = fn;
+}
+
+void Channel::seterrorcallback(std::function<void()> fn)
+{
+    errorcallback_ = fn;
 }

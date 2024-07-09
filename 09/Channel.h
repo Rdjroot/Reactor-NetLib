@@ -22,6 +22,8 @@ private:
     uint32_t revents_ = 0; // fd_已发生的事件
 
     std::function<void()> readcallback_; // fd_读事件的回调函数
+    std::function<void()> closecallback_; // 关闭fd_的回调函数
+    std::function<void()> errorcallback_; // fd_发生错误时的回调函数
 
 public:
     Channel(EventLoop *loop, int fd);
@@ -39,9 +41,11 @@ public:
     void setrevents(uint32_t ev); // 设置revents_成员的值为ev
 
     void handleevent();                             // 事件处理函数，epoll_wait()返回的时候，执行它
-    void newconnection(Socket *servsock);    // 处理新客户端连接请求。
     void onmessage();                               // 处理对端发送过来的消息
+    
     void setreadcallback(std::function<void()> fn); // 设置fd_读事件的回调函数
+    void setclosecallback(std::function<void()> fn); // 设置关闭fd_的回调函数
+    void seterrorcallback(std::function<void()> fn); // 设置fd_发生错误时的回调函数
 };
 
 # endif
