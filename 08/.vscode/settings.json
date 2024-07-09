@@ -1,0 +1,9 @@
+{
+    "files.autoGuessEncoding": true,
+    "files.associations": {
+        "iostream": "cpp",
+        "string": "cpp",
+        "functional": "cpp",
+        "ostream": "cpp"
+    }
+}
