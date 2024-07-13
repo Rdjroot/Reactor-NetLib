@@ -27,7 +27,7 @@ private:
     std::function<void(Connection *)> closecallback_;
     std::function<void(Connection *)> errorcallback_;
     std::function<void(Connection *, std::string)> onmessagecallback_;
-    std::function<void()> sendcompletecallback_;        // 发送完数据后，通知tcpserver
+    std::function<void(Connection *)> sendcompletecallback_;        // 发送完数据后，通知tcpserver
 
 public:
     Connection(EventLoop *loop, Socket *clientsock);
@@ -45,7 +45,7 @@ public:
     void setclosecallback(std::function<void(Connection *)> fn);                  // 设置tcp连接断开的回调函数
     void seterrorcallback(std::function<void(Connection *)> fn);                  // 设置tcp连接出错的回调函数
     void setonmessagecallback(std::function<void(Connection *, std::string)> fn); // 设置处理报文的回调函数
-    void setsendcompletecallback(std::function<void()> fn);
+    void setsendcompletecallback(std::function<void(Connection *)> fn);
 
     void send(const char *data, size_t sz);
 };

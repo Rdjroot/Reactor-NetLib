@@ -3,7 +3,7 @@
  * 主要监听写事件
  *
  */
-#include"TcpServer.h"
+#include "EchoServer.h"
 
 using std::cerr;
 using std::cin;
@@ -19,15 +19,10 @@ int main(int argc, char *argv[])
         cout << "example: ./tcpepoll 192.168.8.128  5085\n";
         return -1;
     }
-
-    cout << "hello world" <<endl;
-    cout << argv[1] <<endl;
-    cout << argv[2] <<endl;
     // 服务端的地址和协议
-    TcpServer tcpserv(argv[1], atoi(argv[2]));
-
+    EchoServer echoserver(argv[1], atoi(argv[2]));
     // 开启事件循环
-    tcpserv.start();
+    echoserver.Start();
 
     return 0;
 }

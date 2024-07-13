@@ -2,6 +2,13 @@
 
 EchoServer::EchoServer(const std::string &ip, uint16_t port) : tcpserver_(ip, port)
 {
+    // 以下代码不是必须的，业务关心什么事件，就指定相应的回调函数
+    tcpserver_.setnewconnectioncb(std::bind(&EchoServer::HandleNewConnection,this,std::placeholders::_1));
+    tcpserver_.setcloseconnectioncb(std::bind(&EchoServer::HandleClose, this, std::placeholders::_1));
+    tcpserver_.seterrorconnectioncb(std::bind(&EchoServer::HandleError, this, std::placeholders::_1));
+    tcpserver_.setonmessagecb(std::bind(&EchoServer::HandleMessage, this, std::placeholders::_1, std::placeholders::_2));
+    tcpserver_.setsendcompletecb(std::bind(&EchoServer::HandleSendComplete, this, std::placeholders::_1));
+    tcpserver_.settimeoutcb(std::bind(&EchoServer::HandleTimeOut, this, std::placeholders::_1));
 }
 
 EchoServer::~EchoServer()
@@ -14,22 +21,25 @@ void EchoServer::Start()
     tcpserver_.start();
 }
 
-void EchoServer::HandleNewConnection(Socket *clientsock)
+void EchoServer::HandleNewConnection(Connection *conn)
 {
     std::cout << "New Connection Come in." << std::endl;
 
     // 根据业务需求编写代码
+    std::cout << "accept client(fd=" << conn->fd() << ", ip=" << conn->ip()
+              << ", port=" << conn->port() << ") ok." << std::endl;
 }
 
 void EchoServer::HandleClose(Connection *conn)
 {
+    std::cout << "client(eventfd=" << conn->fd() << ") disconnected.\n";
     std::cout << "EchoServer conn closed." << std::endl;
-
     // 根据业务需求编写代码
 }
 
 void EchoServer::HandleError(Connection *conn)
 {
+    std::cout << "client(eventfd=" << conn->fd() << ") error." << std::endl;
     std::cout << "EchoServer conn errored." << std::endl;
 
     // 根据业务需求编写代码
@@ -37,6 +47,7 @@ void EchoServer::HandleError(Connection *conn)
 
 void EchoServer::HandleMessage(Connection *conn, std::string message)
 {
+    std::cout <<" handle message here" <<std::endl;
     // 假设这里进行了复杂的计算
     message = "reply " + message;
     int len = message.size();            // 计算回应报文的大小
@@ -45,7 +56,7 @@ void EchoServer::HandleMessage(Connection *conn, std::string message)
     conn->send(tmpbuf.data(), tmpbuf.size());
 }
 
-void EchoServer::HandleSendComplete()
+void EchoServer::HandleSendComplete(Connection *conn)
 {
     std::cout << "Message send complete." << std::endl;
 

@@ -8,7 +8,7 @@ TcpServer::TcpServer(const std::string &ip, uint16_t port)
     acceptor_ = new Acceptor(&loop_, ip, port);
     // 设置回调函数
     acceptor_->setnewconnectioncb(std::bind(&TcpServer::newconnection, this, std::placeholders::_1));
-    loop_.setepolltimeoutcallback(std::bind(&TcpServer::epolltimeout,this,std::placeholders::_1));
+    loop_.setepolltimeoutcallback(std::bind(&TcpServer::epolltimeout, this, std::placeholders::_1));
 }
 
 TcpServer::~TcpServer()
@@ -29,24 +29,29 @@ void TcpServer::start()
 // 处理 客户端新的连接请求
 void TcpServer::newconnection(Socket *clientsock)
 {
-    // std::cout << "222222accept client(fd=" << clientsock->fd() << ", ip=" << clientsock->ip() 
+    // std::cout << "222222accept client(fd=" << clientsock->fd() << ", ip=" << clientsock->ip()
     //             << ", port=" << clientsock->port() << ") ok." << std::endl;
     // 该对象没有被释放
     Connection *conn = new Connection(&loop_, clientsock);
-    // 当前打印有误，无法获得正确的ip和端口
-    std::cout << "accept client(fd=" << conn->fd() << ", ip=" << conn->ip()
-              << ", port=" << conn->port() << ") ok." << std::endl;
+
     // 设置断开/出错时的回调函数
     conn->setclosecallback(std::bind(&TcpServer::closeconnection, this, std::placeholders::_1));
     conn->seterrorcallback(std::bind(&TcpServer::errorconnection, this, std::placeholders::_1));
-    conn->setsendcompletecallback(std::bind(&TcpServer::sendcomplete,this));
-    conn->setonmessagecallback(std::bind(&TcpServer::onmessage,this,std::placeholders::_1,std::placeholders::_2));
+    conn->setsendcompletecallback(std::bind(&TcpServer::sendcomplete, this, std::placeholders::_1));
+    conn->setonmessagecallback(std::bind(&TcpServer::onmessage, this, std::placeholders::_1, std::placeholders::_2));
+
     conns_[conn->fd()] = conn; // 加入容器
+
+    // 回调EchoServer::HandleNewConnection()。
+    if (newconnectioncb_)
+        newconnectioncb_(conn);
 }
 
 void TcpServer::closeconnection(Connection *conn)
 {
-    std::cout << "client(eventfd=" << conn->fd() << ") disconnected.\n";
+    // 回调业务层实现
+    if (closeconnectioncb_)
+        closeconnectioncb_(conn);
     // 关闭该客户端的fd。
     conns_.erase(conn->fd());
     delete (conn);
@@ -54,27 +59,64 @@ void TcpServer::closeconnection(Connection *conn)
 
 void TcpServer::errorconnection(Connection *conn)
 {
-    std::cout << "client(eventfd=" << conn->fd() << ") error." << std::endl;
+    if (errorconnectioncb_)
+        errorconnectioncb_(conn); // 回调EchoServer::HandleError()。
     conns_.erase(conn->fd());
     delete (conn);
 }
 
 void TcpServer::onmessage(Connection *conn, std::string message)
 {
-    // 假设这里进行了复杂的计算
-    message = "reply " + message;
-    int len = message.size();       //计算回应报文的大小
-    std::string tmpbuf((char*)&len, 4);     // 把报文头部填充到回应报文中。
-    tmpbuf.append(message);
-    conn->send(tmpbuf.data(),tmpbuf.size());
+    if (onmessagecb_)
+        onmessagecb_(conn, message);
+    else
+        std::cout<<"no onmessagecb_"<<std::endl;
 }
 
-void TcpServer::sendcomplete()
+void TcpServer::sendcomplete(Connection *conn)
 {
-    std::cout<<"send complete" <<std::endl;
+    if(sendcompletecb_)
+        sendcompletecb_(conn);
 }
 
 void TcpServer::epolltimeout(EventLoop *loop)
 {
-    std::cerr << "epoll_wait() timeout." << std::endl;
+    if(timeoutcb_)
+        timeoutcb_(loop);
+}
+
+void TcpServer::setnewconnectioncb(std::function<void(Connection *)> fn)
+{
+    std::cout << "setnewconnectioncb ok" <<std::endl;
+    newconnectioncb_ = fn;
+}
+
+void TcpServer::setcloseconnectioncb(std::function<void(Connection *)> fn)
+{
+    std::cout << "setcloseconnectioncb ok" <<std::endl;
+    closeconnectioncb_ = fn;
+}
+
+void TcpServer::seterrorconnectioncb(std::function<void(Connection *)> fn)
+{
+    std::cout << "seterrorconnectioncb ok" <<std::endl;
+    errorconnectioncb_ = fn;
+}
+
+void TcpServer::setonmessagecb(std::function<void(Connection *, std::string &message)> fn)
+{
+    std::cout << "setonmessagecb ok" <<std::endl;
+    onmessagecb_ = fn;
+}
+
+void TcpServer::setsendcompletecb(std::function<void(Connection *)> fn)
+{
+    std::cout << "setsendcompletecb ok" <<std::endl;
+    sendcompletecb_ = fn;
+}
+
+void TcpServer::settimeoutcb(std::function<void(EventLoop *)> fn)
+{
+    std::cout << "settimeoutcb ok" <<std::endl;
+    timeoutcb_ = fn;
 }

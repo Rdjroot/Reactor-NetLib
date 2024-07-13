@@ -48,6 +48,7 @@
         "streambuf": "cpp",
         "typeinfo": "cpp",
         "map": "cpp",
-        "sstream": "cpp"
+        "sstream": "cpp",
+        "scoped_allocator": "cpp"
     }
 }

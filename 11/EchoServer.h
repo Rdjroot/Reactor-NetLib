@@ -6,6 +6,7 @@
 #include"Connection.h"
 #include"Socket.h"
 #include<iostream>
+#include<functional>
 
 /**
  * 业务类
@@ -23,11 +24,11 @@ public:
 
     void Start();               // 启动服务
 
-    void HandleNewConnection(Socket *clientsock);     // 处理新的客户端连接，回调函数
+    void HandleNewConnection(Connection *conn);     // 处理新的客户端连接，回调函数
     void HandleClose(Connection *conn);     // 关闭客户端连接，回调函数
     void HandleError(Connection *conn);     // 客户端连接出错关闭，回调函数
     void HandleMessage(Connection *conn, std::string message);      // 处理客户端的请求报文
-    void HandleSendComplete();              // 数据发送完成，处理
+    void HandleSendComplete(Connection *conn);              // 数据发送完成，处理
     void HandleTimeOut(EventLoop *loop);         // epoll_wait()超时回调函数
 };
 

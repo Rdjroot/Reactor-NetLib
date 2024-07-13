@@ -108,7 +108,7 @@ void Connection::writecallback()
     {
         // 如果数据已经全部发送，不再关注写事件。
         clientchannel_->disablewriting();
-        sendcompletecallback_();
+        sendcompletecallback_(this);
     }
 }
 
@@ -127,7 +127,7 @@ void Connection::setonmessagecallback(std::function<void(Connection *, std::stri
     onmessagecallback_ = fn;
 }
 
-void Connection::setsendcompletecallback(std::function<void()> fn)
+void Connection::setsendcompletecallback(std::function<void(Connection *)> fn)
 {
     sendcompletecallback_ = fn;
 }

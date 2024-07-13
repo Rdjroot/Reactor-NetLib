@@ -6,7 +6,7 @@ CXXFLAGS = -g -Wall
 
 # 目标文件目录
 OBJDIR = obj
-OBJS = $(OBJDIR)/InetAddress.o $(OBJDIR)/Socket.o $(OBJDIR)/Epoll.o $(OBJDIR)/Channel.o $(OBJDIR)/EventLoop.o $(OBJDIR)/TcpServer.o $(OBJDIR)/Acceptor.o $(OBJDIR)/Connection.o $(OBJDIR)/Buffer.o
+OBJS = $(OBJDIR)/InetAddress.o $(OBJDIR)/Socket.o $(OBJDIR)/Epoll.o $(OBJDIR)/Channel.o $(OBJDIR)/EventLoop.o $(OBJDIR)/TcpServer.o $(OBJDIR)/Acceptor.o $(OBJDIR)/Connection.o $(OBJDIR)/Buffer.o $(OBJDIR)/EchoServer.o
 
 # 静态库
 LIB = libmylib.a
