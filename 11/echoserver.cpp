@@ -15,8 +15,8 @@ int main(int argc, char *argv[])
 {
     if (argc != 3)
     {
-        cout << "usage: ./tcpepoll ip port\n";
-        cout << "example: ./tcpepoll 192.168.8.128  5085\n";
+        cout << "usage: ./echoserver ip port\n";
+        cout << "example: ./echoserver 192.168.8.128  5085\n";
         return -1;
     }
     // 服务端的地址和协议

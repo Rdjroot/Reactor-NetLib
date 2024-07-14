@@ -1,6 +1,7 @@
 #include "EchoServer.h"
 
-EchoServer::EchoServer(const std::string &ip, uint16_t port) : tcpserver_(ip, port)
+EchoServer::EchoServer(const std::string &ip, uint16_t port,int subthreadnum,int workthreadnum) 
+    : tcpserver_(ip, port,subthreadnum),threadpool_(workthreadnum,"WORKS")
 {
     // 以下代码不是必须的，业务关心什么事件，就指定相应的回调函数
     tcpserver_.setnewconnectioncb(std::bind(&EchoServer::HandleNewConnection,this,std::placeholders::_1));
@@ -49,12 +50,16 @@ void EchoServer::HandleMessage(Connection *conn, std::string& message)
 {
     // std::cout <<" handle message here" <<std::endl;
     // 假设这里进行了复杂的计算
+    // 把业务添加到线程池的任务队列中
+    threadpool_.addtask(std::bind(&EchoServer::OnMessage,this,conn,message));
+}
+
+void EchoServer::OnMessage(Connection *conn, std::string &message)
+{
     message = "reply " + message;
-    // int len = message.size();            // 计算回应报文的大小
-    // std::string tmpbuf((char *)&len, 4); // 把报文头部填充到回应报文中。
-    // tmpbuf.append(message);
     conn->send(message.data(), message.size());     // 把数据发送出去
 }
+
 
 void EchoServer::HandleSendComplete(Connection *conn)
 {
@@ -69,3 +74,4 @@ void EchoServer::HandleTimeOut(EventLoop *loop)
 
     // 根据业务需求编写代码
 }
+

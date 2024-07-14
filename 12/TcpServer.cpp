@@ -3,36 +3,56 @@
 // 初始化eventloop
 // 创建非阻塞的服务端监听socket
 // 传递给epoll句柄，关联事件，开始监听
-TcpServer::TcpServer(const std::string &ip, uint16_t port)
+TcpServer::TcpServer(const std::string &ip, uint16_t port,int threadnum):threadnum_(threadnum)
 {
-    acceptor_ = new Acceptor(&loop_, ip, port);
+    mainloop_ = new EventLoop();        // 创建主事件循环 
+    // 设置超时回调函数
+    mainloop_->setepolltimeoutcallback(std::bind(&TcpServer::epolltimeout, this, std::placeholders::_1));
+
+    // 绑定服务端监听的事件循环
+    acceptor_ = new Acceptor(mainloop_, ip, port);
     // 设置回调函数
     acceptor_->setnewconnectioncb(std::bind(&TcpServer::newconnection, this, std::placeholders::_1));
-    loop_.setepolltimeoutcallback(std::bind(&TcpServer::epolltimeout, this, std::placeholders::_1));
+
+    threadpool_ = new ThreadPool(threadnum_,"IO");       // 创建线程池
+
+    for(int i = 0; i < threadnum_; i++)
+    {
+        // 创建从事件循环
+        subloops_.push_back(new EventLoop);
+        subloops_[i]->setepolltimeoutcallback(std::bind(&TcpServer::epolltimeout, this, std::placeholders::_1));
+        threadpool_->addtask(std::bind(&EventLoop::run,subloops_[i]));
+    }
 }
 
 TcpServer::~TcpServer()
 {
+    delete mainloop_;
     delete acceptor_;
+    // 释放所有Connection对象
     for (auto &aa : conns_)
     {
         delete aa.second;
     }
+
+    for(auto &aa: subloops_)       // 释放从事件循环
+        delete aa;
+
+    delete threadpool_;         // 释放线程池
 }
 
 // 开启循环监听
 void TcpServer::start()
 {
-    loop_.run();
+    mainloop_->run();
 }
 
 // 处理 客户端新的连接请求
 void TcpServer::newconnection(Socket *clientsock)
 {
-    // std::cout << "222222accept client(fd=" << clientsock->fd() << ", ip=" << clientsock->ip()
-    //             << ", port=" << clientsock->port() << ") ok." << std::endl;
-    // 该对象没有被释放
-    Connection *conn = new Connection(&loop_, clientsock);
+
+    // 把新建的conn分配给从事件循环
+    Connection *conn = new Connection(subloops_[clientsock->fd()%threadnum_], clientsock);
 
     // 设置断开/出错时的回调函数
     conn->setclosecallback(std::bind(&TcpServer::closeconnection, this, std::placeholders::_1));
@@ -70,18 +90,18 @@ void TcpServer::onmessage(Connection *conn, std::string &message)
     if (onmessagecb_)
         onmessagecb_(conn, message);
     else
-        std::cout<<"no onmessagecb_"<<std::endl;
+        std::cout << "no onmessagecb_" << std::endl;
 }
 
 void TcpServer::sendcomplete(Connection *conn)
 {
-    if(sendcompletecb_)
+    if (sendcompletecb_)
         sendcompletecb_(conn);
 }
 
 void TcpServer::epolltimeout(EventLoop *loop)
 {
-    if(timeoutcb_)
+    if (timeoutcb_)
         timeoutcb_(loop);
 }
 

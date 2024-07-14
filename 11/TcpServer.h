@@ -43,7 +43,7 @@ public:
     void newconnection(Socket *clientsock);     // 处理新的客户端连接，回调函数
     void closeconnection(Connection *conn);     // 关闭客户端连接，回调函数
     void errorconnection(Connection *conn);     // 客户端连接出错关闭，回调函数
-    void onmessage(Connection *conn, std::string message);      // 处理客户端的请求报文
+    void onmessage(Connection *conn, std::string &message);      // 处理客户端的请求报文
     void sendcomplete(Connection *conn);
     void epolltimeout(EventLoop *loop);         // epoll_wait()超时回调函数
     
