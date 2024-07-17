@@ -73,7 +73,7 @@ void Epoll::removechannel(Channel *ch)
     // 如果已经在红黑树中
     if (ch->inpoll())
     {
-        std::cout<<"removechannel();\n";
+        // std::cout<<"removechannel();\n";
         if (epoll_ctl(epollfd_, EPOLL_CTL_DEL, ch->fd(), 0) == -1)
         {
             cout << "epoll_ctl() failed(" << errno << ")." << endl;

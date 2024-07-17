@@ -36,10 +36,10 @@ ThreadPool::ThreadPool(size_t threadnum, const std::string &threadtype)
                     task = std::move(this->taskqueue_.front());
                     this->taskqueue_.pop();
                 }
-                { // 加锁输出
-                    std::lock_guard<std::mutex> lock(this->output_mutex_);
-                    std::cout << threadtype_ << "(" << syscall(SYS_gettid) << ") thread execute task.\n";
-                }
+                // { // 加锁输出
+                //     std::lock_guard<std::mutex> lock(this->output_mutex_);
+                //     std::cout << threadtype_ << "(" << syscall(SYS_gettid) << ") thread execute task.\n";
+                // }
                 task();     // 执行任务
             } });
     }

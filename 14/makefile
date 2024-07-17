@@ -1,45 +1,10 @@
-# Makefile
+all:client echoserver
 
-# 编译器及其选项
-CXX = g++
-CXXFLAGS = -g -Wall
+client:client.cpp
+	g++ -g -o client client.cpp
 
-# 目标文件目录
-OBJDIR = obj
-OBJS = $(OBJDIR)/InetAddress.o $(OBJDIR)/Socket.o $(OBJDIR)/Epoll.o $(OBJDIR)/Channel.o $(OBJDIR)/EventLoop.o $(OBJDIR)/TcpServer.o $(OBJDIR)/Acceptor.o $(OBJDIR)/Connection.o $(OBJDIR)/Buffer.o $(OBJDIR)/EchoServer.o $(OBJDIR)/ThreadPool.o $(OBJDIR)/Timestamp.o
+echoserver:echoserver.cpp InetAddress.cpp Socket.cpp Epoll.cpp Channel.cpp EventLoop.cpp TcpServer.cpp Acceptor.cpp Connection.cpp Buffer.cpp EchoServer.cpp ThreadPool.cpp Timestamp.cpp
+	g++ -g -o echoserver echoserver.cpp InetAddress.cpp Socket.cpp Epoll.cpp Channel.cpp EventLoop.cpp TcpServer.cpp Acceptor.cpp Connection.cpp Buffer.cpp EchoServer.cpp ThreadPool.cpp Timestamp.cpp -lpthread
 
-# 动态库
-LIB = libmylib.so
-
-all: client echoserver
-
-# 生成动态库
-$(LIB): $(OBJS)
-	$(CXX) -shared -o $@ $^
-
-# 确保目标文件目录存在
-$(OBJDIR):
-	mkdir -p $(OBJDIR)
-
-# 生成目标文件
-$(OBJDIR)/%.o: %.cpp | $(OBJDIR)
-	$(CXX) $(CXXFLAGS) -fPIC -c $< -o $@
-
-# 生成可执行文件 client
-client: client.o $(LIB)
-	$(CXX) $(CXXFLAGS) -o $@ $< -L. -lmylib -Wl,-rpath=.
-
-client.o: client.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-# 生成可执行文件 echoserver
-echoserver: echoserver.o $(LIB)
-	$(CXX) $(CXXFLAGS) -o $@ $< -L. -lmylib -lpthread -Wl,-rpath=.
-
-echoserver.o: echoserver.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@ -lpthread
-
-# 清理
 clean:
-	rm -f client echoserver $(OBJDIR)/*.o $(LIB)
-	rmdir $(OBJDIR)
+	rm -f client echoserver

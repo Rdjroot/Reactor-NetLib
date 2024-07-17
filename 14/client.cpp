@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     }
 
     cout << "connect ok." << endl;
-
+    sleep(1000);            // 测试超时
     // 接受/发送 的数据
     string buf(1024, '\0');
 

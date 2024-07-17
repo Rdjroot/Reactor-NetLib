@@ -33,10 +33,15 @@ private:
     std::unique_ptr<Channel> timerchannel_;                 // 定时器的channel
     bool mainloop_;                                         // true- 主事件循环，false - 从事件循环
 
+    std::mutex mmutex_;                 // 保护conns_的互斥锁
     std::map<int, spConnection> conns_; // map容器，存放connection对象，{fd: conn}
 
+    int timeval_;   // 闹钟时间间隔，单位：秒
+    int timeout_;   // Connection对象超时的时间，单位：秒
+    std::function<void(int)> timercallback_; // 超时回调
+
 public:
-    EventLoop(bool mainloop);
+    EventLoop(bool mainloop,int timeval=30,int timeout=80);
     ~EventLoop();
 
     void run();                                                     // 运行事件循环
@@ -52,6 +57,7 @@ public:
     void handletimer(); // 定时器时间一到，执行的函数
 
     void newconnection(spConnection conn); // 往map容器中添加connection对象
+    void settimercallback(std::function<void(int)>);
 };
 
 #endif

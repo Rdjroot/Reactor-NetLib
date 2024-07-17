@@ -1,4 +1,5 @@
 #include "Connection.h"
+#include "Connection.h"
 
 // 构造函数
 // 为新客户端连接准备读事件和属性设置，并添加到epoll中。
@@ -17,6 +18,7 @@ Connection::Connection(EventLoop *loop, std::unique_ptr<Socket> clientsock)
 
 Connection::~Connection()
 {
+    std::cout << "conn已析构" << std::endl;
 }
 
 int Connection::fd() const
@@ -77,7 +79,7 @@ void Connection::onmessage()
 
                 std::cout << "message (eventfd=" << fd() << "):" << message << std::endl;
 
-                lastime_ = Timestamp::now();        // 更新时间戳
+                lastime_ = Timestamp::now(); // 更新时间戳
                 // std::cout <<"lasttime="<<lastime_.tostring() <<std::endl;
 
                 onmessagecallback_(shared_from_this(), message);
@@ -163,7 +165,7 @@ void Connection::send(const char *data, size_t sz)
     {
         // 如果当前线程不是IO线程，把发送数据的操作转交给事件循环线程去执行
         std::cout << "send()不在事件循环（IO）的线程中。\n";
-        loop_->queueinloop(std::bind(&Connection::sendinloop,this,message));
+        loop_->queueinloop(std::bind(&Connection::sendinloop, this, message));
     }
 }
 
@@ -172,4 +174,10 @@ void Connection::sendinloop(std::shared_ptr<std::string> data)
     // 把数据存到缓冲区
     outputbuffer_.appendwithhead(data->data(), data->size());
     clientchannel_->enablewriting(); // 注册写事件d
+}
+
+bool Connection::timeout(time_t now, int val)
+{
+    // 秒数大于val就算超时
+    return now - lastime_.toint() > val;
 }

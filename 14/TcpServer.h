@@ -23,15 +23,17 @@
 #include <vector>
 #include "ThreadPool.h"
 #include <memory>
+#include<mutex>
 
 class TcpServer
 {
 private:
-    std::unique_ptr<EventLoop> mainloop_;                                                 // 主事件循环
-    std::vector<std::unique_ptr<EventLoop>> subloops_;                                   // 从事件循环容器
-    Acceptor acceptor_;                                                  // 一个TcpServer只能有一个acceptor对象
+    std::unique_ptr<EventLoop> mainloop_;                                 // 主事件循环
+    std::vector<std::unique_ptr<EventLoop>> subloops_;                    // 从事件循环容器
+    Acceptor acceptor_;                                                   // 一个TcpServer只能有一个acceptor对象
     int threadnum_;                                                       // 线程池大小
-    ThreadPool threadpool_;                                              // 线程池S
+    ThreadPool threadpool_;                                               // 线程池S
+    std::mutex mutex_;                                                    // connection的互斥锁
     std::map<int, spConnection> conns_;                                   // 一个TcpServer有多个Connection对象
     std::function<void(spConnection)> newconnectioncb_;                   // 回调EchoServer::HandleNewConnection()。
     std::function<void(spConnection)> closeconnectioncb_;                 // 回调EchoServer::HandleClose()。
@@ -46,7 +48,7 @@ public:
 
     void start();
 
-    void newconnection(std::unique_ptr<Socket> clientsock);                 // 处理新的客户端连接，回调函数
+    void newconnection(std::unique_ptr<Socket> clientsock);  // 处理新的客户端连接，回调函数
     void closeconnection(spConnection conn);                 // 关闭客户端连接，回调函数
     void errorconnection(spConnection conn);                 // 客户端连接出错关闭，回调函数
     void onmessage(spConnection conn, std::string &message); // 处理客户端的请求报文
@@ -59,6 +61,8 @@ public:
     void setonmessagecb(std::function<void(spConnection, std::string &message)> fn);
     void setsendcompletecb(std::function<void(spConnection)> fn);
     void settimeoutcb(std::function<void(EventLoop *)> fn);
+
+    void removeconn(int fd); // 删除conns_中的Connection对象，在事件循环的超时判断里回调
 };
 
 #endif

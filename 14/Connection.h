@@ -57,6 +57,8 @@ public:
 
     void send(const char *data, size_t sz);             // 发送数据（任何线程都是调用此函数）
     void sendinloop(std::shared_ptr<std::string> data); // 发送数据的具体实现。如果是IO，直接使用，如果是工作线程，将此函数传递给IO线程
+
+    bool timeout(time_t now,int val);    // 判断TCP连接是否超时（空闲太久）
 };
 
 #endif

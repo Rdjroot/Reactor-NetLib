@@ -12,17 +12,19 @@ int createtimefd(int sec = 30)
     return tfd;
 }
 
-EventLoop::EventLoop(bool mainloop)
-    : ep_(new Epoll), wakeupfd_(eventfd(0, EFD_NONBLOCK)), wakechannel_(new Channel(this, wakeupfd_))
-    , timefd_(createtimefd(5)),timerchannel_(new Channel(this, timefd_)),mainloop_(mainloop)
+EventLoop::EventLoop(bool mainloop,int timeval,int timeout)
+    : ep_(new Epoll), wakeupfd_(eventfd(0, EFD_NONBLOCK))
+    , wakechannel_(new Channel(this, wakeupfd_))
+    , timefd_(createtimefd(timeout)), timerchannel_(new Channel(this, timefd_))
+    , mainloop_(mainloop),timeval_(timeval),timeout_(timeout)
+
 {
     // 设置读事件
     wakechannel_->setreadcallback(std::bind(&EventLoop::handlewakeup, this));
     wakechannel_->enablereading(); // 注册读事件，只要事件循環被喚醒，就會調用handlewakeup
 
-    timerchannel_->setreadcallback(std::bind(&EventLoop::handletimer,this));
+    timerchannel_->setreadcallback(std::bind(&EventLoop::handletimer, this));
     timerchannel_->enablereading();
-
 }
 
 EventLoop::~EventLoop()
@@ -93,7 +95,7 @@ void EventLoop::wakeup()
 // 事件循环线程被eventfd唤醒后，执行的函数
 void EventLoop::handlewakeup()
 {
-    std::cout << "handlewakeup() thread id is " << syscall(SYS_gettid) << ".\n";
+    // std::cout << "handlewakeup() thread id is " << syscall(SYS_gettid) << ".\n";
     uint64_t val;
     read(wakeupfd_, &val, sizeof(val)); // 从eventfd中读取数据，如果不读取，eventfd读事件会一直触发
 
@@ -112,17 +114,44 @@ void EventLoop::handlewakeup()
 void EventLoop::handletimer()
 {
     struct itimerspec timeout = {}; // 定时时间的数据结构
-    timeout.it_value.tv_sec = 5;  // 设置定时时间
+    timeout.it_value.tv_sec = timeval_;    // 设置定时时间
     timeout.it_value.tv_nsec = 0;
     timerfd_settime(timefd_, 0, &timeout, 0);
-    if(mainloop_)
-        std::cout<<"主事件循环的闹钟响了"<<std::endl;
+    if (mainloop_)
+    {
+        // std::cout << "主事件循环的闹钟响了" << std::endl;
+    }
+
     else
-        std::cout <<"从事件循环的闹钟时间到了"<<std::endl;
+    {
+        // std::cout << "从事件循环的闹钟时间到了" << std::endl;
+        std::cout << "EventLoop::handletimer() thread is: " << syscall(SYS_gettid);
+        time_t now = time(0); // 获取当前时间
+        for (auto it = conns_.begin();it != conns_.end();)
+        {
+            std::cout << ", fd " << it->first;
+            if(it->second->timeout(now, timeout_))
+            {
+                std::cout << "EventLoop::handletimer()  TIMEOUT thread is: " << syscall(SYS_gettid);
+                timercallback_(it->first);
+                std::lock_guard<std::mutex> gd(mmutex_);
+                it = conns_.erase(it);
+            }
+            else
+                it++;
+        }
+        std::cout << std::endl;
+    }
 }
 
-// 
+//
 void EventLoop::newconnection(spConnection conn)
 {
-    conns_[conn->fd()]=conn;
+    std::lock_guard<std::mutex> gd(mmutex_);
+    conns_[conn->fd()] = conn;
+}
+
+void EventLoop::settimercallback(std::function<void(int)> fn)
+{
+    timercallback_ = fn;
 }

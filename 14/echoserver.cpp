@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
         return -1;
     }
     // 服务端的地址和协议
-    EchoServer echoserver(argv[1], atoi(argv[2]),3,2);
+    EchoServer echoserver(argv[1], atoi(argv[2]),3,0);
     // 开启事件循环
     echoserver.Start();
 
