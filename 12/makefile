@@ -8,36 +8,33 @@ CXXFLAGS = -g -Wall
 OBJDIR = obj
 OBJS = $(OBJDIR)/InetAddress.o $(OBJDIR)/Socket.o $(OBJDIR)/Epoll.o $(OBJDIR)/Channel.o $(OBJDIR)/EventLoop.o $(OBJDIR)/TcpServer.o $(OBJDIR)/Acceptor.o $(OBJDIR)/Connection.o $(OBJDIR)/Buffer.o $(OBJDIR)/EchoServer.o $(OBJDIR)/ThreadPool.o
 
-# 静态库
-LIB = libmylib.a
+# 动态库
+LIB = libmylib.so
 
 all: client echoserver
 
-# 生成静态库
+# 生成动态库
 $(LIB): $(OBJS)
-	ar rcs $@ $^
+	$(CXX) -shared -o $@ $^
 
 # 确保目标文件目录存在
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
 
 # 生成目标文件
-# $<：代表第一个依赖文件的名字。在这里$< 代表对应的 .cpp 文件。
 $(OBJDIR)/%.o: %.cpp | $(OBJDIR)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) -fPIC -c $< -o $@
 
 # 生成可执行文件 client
-# $@：代表规则中的目标文件名； 在这里$@ 代表 client。
-# $^：代表规则中的所有依赖文件列表。 在这里$^ 代表 client.o libmylib.a。
 client: client.o $(LIB)
-	$(CXX) $(CXXFLAGS) -o $@ $^
+	$(CXX) $(CXXFLAGS) -o $@ $< -L. -lmylib
 
 client.o: client.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # 生成可执行文件 echoserver
 echoserver: echoserver.o $(LIB)
-	$(CXX) $(CXXFLAGS) -o $@ $^
+	$(CXX) $(CXXFLAGS) -o $@ $< -L. -lmylib -lpthread
 
 echoserver.o: echoserver.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@ -lpthread

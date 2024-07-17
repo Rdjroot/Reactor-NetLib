@@ -22,7 +22,7 @@ void EchoServer::Start()
     tcpserver_.start();
 }
 
-void EchoServer::HandleNewConnection(Connection *conn)
+void EchoServer::HandleNewConnection(spConnection conn)
 {
     std::cout << "New Connection Come in." << std::endl;
 
@@ -31,14 +31,14 @@ void EchoServer::HandleNewConnection(Connection *conn)
               << ", port=" << conn->port() << ") ok." << std::endl;
 }
 
-void EchoServer::HandleClose(Connection *conn)
+void EchoServer::HandleClose(spConnection conn)
 {
     std::cout << "client(eventfd=" << conn->fd() << ") disconnected.\n";
     std::cout << "EchoServer conn closed." << std::endl;
     // 根据业务需求编写代码
 }
 
-void EchoServer::HandleError(Connection *conn)
+void EchoServer::HandleError(spConnection conn)
 {
     std::cout << "client(eventfd=" << conn->fd() << ") error." << std::endl;
     std::cout << "EchoServer conn errored." << std::endl;
@@ -46,7 +46,7 @@ void EchoServer::HandleError(Connection *conn)
     // 根据业务需求编写代码
 }
 
-void EchoServer::HandleMessage(Connection *conn, std::string& message)
+void EchoServer::HandleMessage(spConnection conn, std::string& message)
 {
     // std::cout <<" handle message here" <<std::endl;
     // 假设这里进行了复杂的计算
@@ -54,14 +54,14 @@ void EchoServer::HandleMessage(Connection *conn, std::string& message)
     threadpool_.addtask(std::bind(&EchoServer::OnMessage,this,conn,message));
 }
 
-void EchoServer::OnMessage(Connection *conn, std::string &message)
+void EchoServer::OnMessage(spConnection conn, std::string &message)
 {
     message = "reply " + message;
     conn->send(message.data(), message.size());     // 把数据发送出去
 }
 
 
-void EchoServer::HandleSendComplete(Connection *conn)
+void EchoServer::HandleSendComplete(spConnection conn)
 {
     std::cout << "Message send complete." << std::endl;
 
@@ -71,7 +71,6 @@ void EchoServer::HandleSendComplete(Connection *conn)
 void EchoServer::HandleTimeOut(EventLoop *loop)
 {
     std::cout << "EchoServer timeout." << std::endl;
-
     // 根据业务需求编写代码
 }
 

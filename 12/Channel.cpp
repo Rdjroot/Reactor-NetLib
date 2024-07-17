@@ -1,4 +1,5 @@
 #include "Channel.h"
+#include "Channel.h"
 
 using std::cerr;
 using std::cin;
@@ -6,7 +7,7 @@ using std::cout;
 using std::endl;
 using std::string;
 
-Channel::Channel(EventLoop *loop, int fd) : loop_(loop), fd_(fd)
+Channel::Channel(const std::unique_ptr<EventLoop>& loop, int fd) : loop_(loop), fd_(fd)
 {
 }
 
@@ -68,6 +69,18 @@ void Channel::disablewriting()
     loop_->updatechannel(this);
 }
 
+void Channel::disableall()
+{
+    events_ = 0;
+    loop_->updatechannel(this);
+}
+
+void Channel::remove()
+{
+    disableall();           // 先取消全部的事件
+    loop_->removechannel(this);         // 从epoll句柄红黑树上删除fd
+}
+
 // 记录Channel已添加到epoll的红黑树中
 void Channel::setinepoll()
 {
@@ -120,7 +133,6 @@ void Channel::seterrorcallback(std::function<void()> fn)
 {
     errorcallback_ = fn;
 }
-
 
 void Channel::setwritecallback(std::function<void()> fn)
 {

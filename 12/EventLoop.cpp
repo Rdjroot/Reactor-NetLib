@@ -1,4 +1,5 @@
 #include "EventLoop.h"
+#include "EventLoop.h"
 
 EventLoop::EventLoop():ep_(new Epoll)
 {
@@ -6,7 +7,6 @@ EventLoop::EventLoop():ep_(new Epoll)
 
 EventLoop::~EventLoop()
 {
-    delete ep_;
 }
 
 void EventLoop::run()
@@ -38,4 +38,9 @@ void EventLoop::updatechannel(Channel *ch)
 void EventLoop::setepolltimeoutcallback(std::function<void(EventLoop *)> fn)
 {
     epolltimeoutcallback_ = fn;
+}
+
+void EventLoop::removechannel(Channel *ch)
+{
+    ep_->removechannel(ch);
 }

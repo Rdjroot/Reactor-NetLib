@@ -1,22 +1,22 @@
 #include "Connection.h"
 
-Connection::Connection(EventLoop *loop, Socket *clientsock) : loop_(loop), clientsock_(clientsock)
+// 构造函数
+// 为新客户端连接准备读事件和属性设置，并添加到epoll中。
+Connection::Connection(const std::unique_ptr<EventLoop>& loop, std::unique_ptr<Socket> clientsock)
+    : loop_(loop), clientsock_(std::move(clientsock)), disconnect_(false),
+        clientchannel_(new Channel(loop_, clientsock_->fd()))
 {
-    // 为新客户端连接准备读事件和属性设置，并添加到epoll中。
-    clientchannel_ = new Channel(loop_, clientsock_->fd());
     // 绑定回调函数
     clientchannel_->setreadcallback(std::bind(&Connection::onmessage, this));
     clientchannel_->setclosecallback(std::bind(&Connection::closecallback, this));
     clientchannel_->seterrorcallback(std::bind(&Connection::errorcallback, this));
-    clientchannel_->setwritecallback(std::bind(&Connection::writecallback,this));
+    clientchannel_->setwritecallback(std::bind(&Connection::writecallback, this));
     clientchannel_->useet();         // 设置边缘触发，
     clientchannel_->enablereading(); // 将新的客户端fd的读事件添加到epoll中
 }
 
 Connection::~Connection()
 {
-    delete clientsock_;
-    delete clientchannel_;
 }
 
 int Connection::fd() const
@@ -75,12 +75,13 @@ void Connection::onmessage()
                 std::string message(inputbuffer_.data() + 4, len);
                 inputbuffer_.erase(0, len + 4); // 删除已经取出的数据
                 std::cout << "message (eventfd=" << fd() << "):" << message << std::endl;
-                onmessagecallback_(this, message);
+                onmessagecallback_(shared_from_this(), message);
             }
             break;
         }
         else if (nread == 0) // 客户端连接已断开。
         {
+            // clientchannel_->remove();
             closecallback();
             break;
         }
@@ -89,12 +90,16 @@ void Connection::onmessage()
 
 void Connection::closecallback()
 {
-    closecallback_(this);
+    disconnect_ = true;
+    clientchannel_->remove();
+    closecallback_(shared_from_this());
 }
 
 void Connection::errorcallback()
 {
-    errorcallback_(this);
+    disconnect_ = true;
+    clientchannel_->remove();
+    errorcallback_(shared_from_this());
 }
 
 void Connection::writecallback()
@@ -108,26 +113,26 @@ void Connection::writecallback()
     {
         // 如果数据已经全部发送，不再关注写事件。
         clientchannel_->disablewriting();
-        sendcompletecallback_(this);
+        sendcompletecallback_(shared_from_this());
     }
 }
 
-void Connection::setclosecallback(std::function<void(Connection *)> fn)
+void Connection::setclosecallback(std::function<void(spConnection)> fn)
 {
     closecallback_ = fn;
 }
 
-void Connection::seterrorcallback(std::function<void(Connection *)> fn)
+void Connection::seterrorcallback(std::function<void(spConnection)> fn)
 {
     errorcallback_ = fn;
 }
 
-void Connection::setonmessagecallback(std::function<void(Connection *, std::string&)> fn)
+void Connection::setonmessagecallback(std::function<void(spConnection, std::string &)> fn)
 {
     onmessagecallback_ = fn;
 }
 
-void Connection::setsendcompletecallback(std::function<void(Connection *)> fn)
+void Connection::setsendcompletecallback(std::function<void(spConnection)> fn)
 {
     sendcompletecallback_ = fn;
 }
@@ -135,6 +140,12 @@ void Connection::setsendcompletecallback(std::function<void(Connection *)> fn)
 // 发送数据
 void Connection::send(const char *data, size_t sz)
 {
+    if (disconnect_)
+    {
+        std::cout<<"客户端连接已断开。。。send()直接返回。"<<std::endl;
+        return;
+    }
+
     // 把数据存到缓冲区
     outputbuffer_.appendwithhead(data, sz);
     clientchannel_->enablewriting(); // 注册写事件

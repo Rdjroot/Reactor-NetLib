@@ -66,6 +66,21 @@ void Epoll::updatechannel(Channel *ch)
     }
 }
 
+// 从红黑树上删除channeL
+void Epoll::removechannel(Channel *ch)
+{
+    // 如果已经在红黑树中
+    if (ch->inpoll())
+    {
+        std::cout<<"removechannel();"<<std::endl;
+        if (epoll_ctl(epollfd_, EPOLL_CTL_DEL, ch->fd(), 0) == -1)
+        {
+            cout << "epoll_ctl() failed(" << errno << ")." << endl;
+            exit(-1);
+        }
+    }
+}
+
 // 运行epoll_wait(), 等待事件发生，已发生的事件用vector容器返回
 std::vector<Channel *> Epoll::loop(int timeout)
 {
@@ -91,7 +106,7 @@ std::vector<Channel *> Epoll::loop(int timeout)
     if (infds == 0)
     {
         // epoll超時了，代表系统很空闲，返回的channel为空
-        cerr << "epoll_wait() timeout." << endl;
+        // cerr << "epoll_wait() timeout." << endl;
         return channels;
     }
 

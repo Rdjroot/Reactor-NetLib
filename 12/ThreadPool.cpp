@@ -2,7 +2,7 @@
 
 //  g++ -o test ThreadPool.cpp -lpthread
 
-ThreadPool::ThreadPool(size_t threadnum,const std::string threadtype) 
+ThreadPool::ThreadPool(size_t threadnum,const std::string& threadtype) 
     : stop_(false), threadtype_(threadtype)
 {
     for (int i = 0; i < threadnum; i++)

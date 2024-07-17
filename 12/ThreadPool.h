@@ -24,7 +24,7 @@ private:
     const std::string threadtype_;                // 标记线程的种类："IO","WORKS"
 public:
     // 在构造函数中奖启动threadnum个线程
-    ThreadPool(size_t threadnum,const std::string threadtype);
+    ThreadPool(size_t threadnum,const std::string& threadtype);
 
     // 把任务 添加到队列中
     void addtask(std::function<void()> task);
