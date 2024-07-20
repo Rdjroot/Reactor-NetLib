@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
 
         buf.assign(1024, '\0');
         // 读取报文内容
-        recv(sockfd, buf.data(), len, 0);
+        recv(sockfd, &buf[0], len, 0);
         // cout << "recv: " << buf << endl;
         // sleep(1);
     }

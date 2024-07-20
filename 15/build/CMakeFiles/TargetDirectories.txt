@@ -1,0 +1,6 @@
+/home/rdjroot/ReactorProject/Reactor/15/build/CMakeFiles/client.dir
+/home/rdjroot/ReactorProject/Reactor/15/build/CMakeFiles/echoserver.dir
+/home/rdjroot/ReactorProject/Reactor/15/build/CMakeFiles/clean_all.dir
+/home/rdjroot/ReactorProject/Reactor/15/build/CMakeFiles/clean_logs.dir
+/home/rdjroot/ReactorProject/Reactor/15/build/CMakeFiles/edit_cache.dir
+/home/rdjroot/ReactorProject/Reactor/15/build/CMakeFiles/rebuild_cache.dir

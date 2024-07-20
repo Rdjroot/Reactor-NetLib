@@ -58,6 +58,11 @@
         "semaphore": "cpp",
         "stop_token": "cpp",
         "thread": "cpp",
-        "cinttypes": "cpp"
-    }
+        "cinttypes": "cpp",
+        "fstream": "cpp",
+        "codecvt": "cpp",
+        "iomanip": "cpp",
+        "queue": "cpp"
+    },
+    "workbench.editor.wrapTabs": true
 }
