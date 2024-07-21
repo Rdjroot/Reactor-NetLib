@@ -6,9 +6,11 @@
 #include <sys/epoll.h>
 #include <vector>
 #include <unistd.h>
-#include <iostream>
 #include "Channel.h"
 #include <cstring>
+#include "Logger.h"
+
+extern Logger &logger;
 
 class Channel;
 
@@ -23,9 +25,9 @@ public:
     Epoll();
     ~Epoll();
 
-    void updatechannel(Channel *ch);                // 把channel添加/更新到红黑树上，channel中有fd，也有需要监视的事件。
-    void removechannel(Channel *ch);
-    std::vector<Channel *> loop(int timeout = 100000000);  // 运行epoll_wait()，等待事件的发生，已发生的事件用vector容器返回
+    void updatechannel(Channel *ch);                      // 把channel添加/更新到红黑树上，channel中有fd，也有需要监视的事件。
+    void removechannel(Channel *ch);                      // 从红黑树上删除channel
+    std::vector<Channel *> loop(int timeout = 100000000); // 运行epoll_wait()，等待事件的发生，已发生的事件用vector容器返回
 };
 
-# endif
+#endif

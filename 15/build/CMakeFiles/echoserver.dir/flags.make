@@ -6,5 +6,5 @@ CXX_DEFINES =
 
 CXX_INCLUDES = -I/home/rdjroot/ReactorProject/Reactor/15/include
 
-CXX_FLAGS = -O3 -pg -std=gnu++11
+CXX_FLAGS = -O3 -pg -g -std=gnu++11
 

@@ -1,7 +1,6 @@
 #ifndef BUFFER_H_
 #define BUFFER_H_
 #include <string>
-#include <iostream>
 
 // 读写缓冲区类
 class Buffer
@@ -16,7 +15,7 @@ public:
     ~Buffer();
 
     void append(const char *data, size_t size);        // 追加数据
-    void appendwithsep(const char *data, size_t size); // 把数据追加到buffer中，但会追加报文头部
+    void appendwithsep(const char *data, size_t size); // 把数据追加到buf)中，附加报文分隔符
     size_t size();                                     // 返回buf_大小
     const char *data();                                // 返回buf_的首地址
     void clear();                                      // 清空buf_

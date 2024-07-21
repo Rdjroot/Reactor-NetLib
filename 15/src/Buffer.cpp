@@ -8,14 +8,16 @@ Buffer::~Buffer()
 {
 }
 
+// 把数据追加到buf_中
 void Buffer::append(const char *data, size_t size)
 {
     buf_.append(data, size);
 }
 
+// 把数据追加到buf_中，附加报文分隔符
 void Buffer::appendwithsep(const char *data, size_t size)
 {
-    if (sep_ == 0)
+    if (sep_ == 0)       // 没有分隔符
     {
         buf_.append(data, size); // 把报文内容加入
     }
@@ -37,6 +39,7 @@ size_t Buffer::size()
     return buf_.size();
 }
 
+// 返回buf_的首地址
 const char *Buffer::data()
 {
     return buf_.data();
@@ -47,11 +50,13 @@ void Buffer::clear()
     buf_.clear();
 }
 
+// 从buf_的pos开始，删除nn个字节，pos从0开始
 void Buffer::erase(size_t pos, size_t sz)
 {
     buf_.erase(pos, sz);
 }
 
+// 从buf_中拆分出一个报文，存放在ss中，如果buf_中没有报文，返回false
 bool Buffer::pickmessge(std::string &ss)
 {
     if (buf_.empty())

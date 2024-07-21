@@ -11,14 +11,15 @@ int createnonblocking()
     int listenfd = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, IPPROTO_TCP);
     if (listenfd < 0)
     {
-        cerr << __FILE__<<":"<<__FUNCTION__ <<":" << __LINE__ << " listen socket() failed, " 
-            "error:" << errno << endl;
+        logger.logFormatted(LogLevel::ERROR, "%s:%s:%d listen socket create error:%d.", __FILE__, __FUNCTION__, __LINE__, errno);
     }
     return listenfd;
 }
 
+// 构造函数，传入一个已准备好的fd
 Socket::Socket(int fd) : fd_(fd){};
 
+// 在析构函数中，将关闭fd_
 Socket::~Socket()
 {
     close(fd_);
@@ -30,16 +31,19 @@ int Socket::fd() const
     return fd_;
 }
 
+// 返回ip_成员
 std::string Socket::ip() const
 {
     return ip_;
 }
 
+// 返回port_成员
 uint16_t Socket::port() const
 {
     return port_;
 }
 
+// 设置ip_和port_成员
 void Socket::setipport(const std::string &ip, uint16_t port)
 {
     ip_ = ip;
@@ -86,11 +90,11 @@ void Socket::bind(const InetAddress &servaddr)
 {
     if (::bind(fd_, servaddr.addr(), sizeof(servaddr)) < 0)
     {
-        cerr << "bind() failed" << endl;
+        logger.log(LogLevel::ERROR, "bind() failed");
         close(fd_);
         exit(-1);
     }
-    
+
     setipport(servaddr.ip(), servaddr.port());
 }
 
@@ -98,7 +102,7 @@ void Socket::listen(int nn)
 {
     if (::listen(fd_, nn) != 0) // 在高并发的网络服务器中，第二个参数要大一些。
     {
-        cerr << "listen() failed" << endl;
+        logger.log(LogLevel::ERROR, "listen() failed");
         close(fd_);
         exit(-1);
     }
@@ -110,9 +114,9 @@ int Socket::accept(InetAddress &clientaddr)
     socklen_t len = sizeof(peeraddr);
 
     // accept4()函数是Linux 2.6.28之后新增的函数，用于替代accept()函数。
-    // 添加SOCK_NONBLOCK，让clientfd变为非阻塞的。
+    // 添加SOCK_NONBLOCK，让clientfd变为非阻塞的。(客户端的socketfd会是非阻塞的)
     int clientfd = accept4(fd_, (struct sockaddr *)&peeraddr, &len, SOCK_NONBLOCK);
 
-    clientaddr.setaddr(peeraddr); // 客户端
+    clientaddr.setaddr(peeraddr); // 客户端的地址和协议
     return clientfd;
 }

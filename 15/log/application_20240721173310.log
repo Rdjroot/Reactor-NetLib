@@ -1,0 +1,19 @@
+2024-07-21 17:33:10 [INFO] create IO threadID(28140).
+2024-07-21 17:33:10 [INFO] create IO threadID(28143).
+2024-07-21 17:33:10 [INFO] IO (28143)thread execute task.
+2024-07-21 17:33:10 [INFO] create IO threadID(28141).
+2024-07-21 17:33:10 [INFO] IO (28141)thread execute task.
+2024-07-21 17:33:10 [INFO] 服务端程序开始启动。
+2024-07-21 17:33:10 [INFO] create IO threadID(28144).
+2024-07-21 17:33:10 [INFO] IO (28144)thread execute task.
+2024-07-21 17:33:10 [INFO] create IO threadID(28142).
+2024-07-21 17:33:10 [INFO] IO (28142)thread execute task.
+2024-07-21 17:33:10 [INFO] IO (28140)thread execute task.
+2024-07-21 17:33:26 [WARNING] accept client(fd=23, ip=192.168.8.128, port=33442) ok.
+2024-07-21 17:33:48 [WARNING] client(eventfd=23) disconnected.
+2024-07-21 17:33:54 [WARNING] sig=2
+2024-07-21 17:33:54 [WARNING] 工作线程已停止.
+2024-07-21 17:33:54 [WARNING] 主事件循环已停止
+2024-07-21 17:33:54 [WARNING] 从事件循环已停止
+2024-07-21 17:33:54 [WARNING] IO线程池停止
+2024-07-21 17:33:54 [WARNING] echoserver 已停止服务

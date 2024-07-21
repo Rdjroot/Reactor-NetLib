@@ -64,7 +64,7 @@ void TcpServer::newconnection(std::unique_ptr<Socket> clientsock)
 
     {
         std::lock_guard<std::mutex> gd(mutex_);
-        conns_[conn->fd()] = conn;              // 加入map容器
+        conns_[conn->fd()] = conn; // 加入map容器
     }
 
     // 将新的conn加入事件循环的监听中
@@ -75,12 +75,13 @@ void TcpServer::newconnection(std::unique_ptr<Socket> clientsock)
         newconnectioncb_(conn);
 }
 
-// 客户端连接关闭，回调应用层并进行析构
+// 关闭客户端的连接，在Connection类中回调此函数。
 void TcpServer::closeconnection(spConnection conn)
 {
     // 回调业务层实现
     if (closeconnectioncb_)
         closeconnectioncb_(conn);
+
     {
         std::lock_guard<std::mutex> gd(mutex_);
         // 关闭该客户端的fd。
@@ -100,21 +101,23 @@ void TcpServer::errorconnection(spConnection conn)
     }
 }
 
-// 回调应用层处理函数
+// 处理客户端的请求报文，在Connection类中回调此函数
 void TcpServer::onmessage(spConnection conn, std::string &message)
 {
+    // 回调EchoServer::HandleMessage()。
     if (onmessagecb_)
         onmessagecb_(conn, message);
-    else
-        std::cout << "no onmessagecb_" << std::endl;
 }
 
+// 数据发送完成后，在Connection类中回调此函数
 void TcpServer::sendcomplete(spConnection conn)
 {
+    // 回调应用层实现
     if (sendcompletecb_)
         sendcompletecb_(conn);
 }
 
+// epoll_wait()超时，在EventLoop类中回调此函数
 void TcpServer::epolltimeout(EventLoop *loop)
 {
     // if (timeoutcb_)

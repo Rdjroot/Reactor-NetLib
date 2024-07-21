@@ -40,11 +40,12 @@ int main(int argc, char *argv[])
 
     signal(SIGTERM, Stop); // 信号15 系统kill或者killall命令
     signal(SIGINT, Stop);  // 信号2 Ctrl + C
-
+    
+    logger.setLogLevel(LogLevel::WARNING);
     // 服务端的地址和协议
     echoserver = new EchoServer(argv[1], atoi(argv[2]), 5, 0);
 
-    logger.log(LogLevel::INFO, "服务端程序开始启动。");
+    logger.log(LogLevel::WARNING, "服务端程序开始启动。");
 
     // 开启事件循环
     echoserver->Start();
