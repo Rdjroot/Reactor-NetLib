@@ -31,7 +31,7 @@ private:
     Buffer outputbuffer_;                    // 发送缓冲区
     std::atomic_bool disconnect_;            // 客户端是否已断开，如果已断开，设为true
     Timestamp lastime_;                      // 时间戳，创建 Connection时为当前时间，每接收到一个报文，把时间戳更新为当前时间
-
+    int flag = 0;
     std::function<void(spConnection)> closecallback_;                    // 关闭fd_的回调函数，将回调TcpServer::closeconnection()
     std::function<void(spConnection)> errorcallback_;                    // fd_发生了错误的回调函数，将回调TcpServer::errorconnection()
     std::function<void(spConnection, std::string &)> onmessagecallback_; // 处理报文的回调函数，将回调TcpServer::onmessage()

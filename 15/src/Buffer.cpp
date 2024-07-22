@@ -69,10 +69,10 @@ bool Buffer::pickmessge(std::string &ss)
     else if (sep_ == 1)
     {
         // 取出报文首部
-        int len = *reinterpret_cast<const int *>(buf_.data());
-
+        int len;
+        memcpy(&len, buf_.data(), 4);
         // 如果inputbuffer_的数据量小于报文头部，说明inputbuffer_中的报文不完整
-        if (buf_.size() < static_cast<size_t>(len + 4))
+        if (buf_.size() < (len + 4))
             return false;
 
         // 从inputbuffer中取出一个报文（略过报文头部）

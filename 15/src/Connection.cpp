@@ -1,5 +1,4 @@
 #include "Connection.h"
-#include "Connection.h"
 
 // 构造函数
 // 为新客户端连接准备读事件和属性设置，并添加到epoll中。
@@ -18,7 +17,7 @@ Connection::Connection(EventLoop *loop, std::unique_ptr<Socket> clientsock)
 
 Connection::~Connection()
 {
-    // std::cout << "conn已析构" << std::endl;
+    logger.logFormatted(LogLevel::WARNING, "Connection is over . fd is: %d", fd());
 }
 
 // 返回客户端的fd
@@ -41,18 +40,18 @@ uint16_t Connection::port() const
 
 void Connection::onmessage()
 {
-    std::string buffer(1024, '\0');
+    char buffer[1024];
     while (true) // 由于使用非阻塞IO，一次读取buffer大小数据，直到全部的数据读取完毕。
     {
-        buffer.assign(1024, '\0');
+        bzero(&buffer, sizeof(buffer));
         // 从套接字中读数据
-        ssize_t nread = ::read(fd(), &buffer[0], sizeof(buffer));
+        ssize_t nread = ::read(fd(), buffer, sizeof(buffer));
 
         // 成功的读取到了数据。
         if (nread > 0)
         {
             // 把读取的数据追加到接收缓冲区中
-            inputbuffer_.append(buffer.data(), nread);
+            inputbuffer_.append(buffer, nread);
         }
         else if (nread == -1 && errno == EINTR) // 读取数据的时候被信号中断，继续读取。
         {
@@ -60,17 +59,10 @@ void Connection::onmessage()
         }
         else if (nread == -1 && ((errno == EAGAIN) || (errno == EWOULDBLOCK))) // 全部的数据已读取完毕。
         {
+            std::string message;
             // 从接收缓冲区中拆分出客户端的请求消息。
             while (true)
             {
-                // 如果缓冲区的大小不足以四字节
-                if (inputbuffer_.size() < sizeof(int))
-                {
-                    break;
-                }
-
-                std::string message;
-
                 // 如果无法再拆分出报文
                 if (!inputbuffer_.pickmessge(message))
                     break;
@@ -78,11 +70,18 @@ void Connection::onmessage()
                 lastime_ = Timestamp::now(); // 更新时间戳
 
                 // 将拆出的报文进行计算，并返回数据
-                onmessagecallback_(shared_from_this(), message);    // 回调TcpServer::onmessage()处理客户端的请求消息
+                try
+                {
+                    onmessagecallback_(shared_from_this(), message); // 回调TcpServer::onmessage()处理客户端的请求消息
+                }
+                catch (const std::exception &e)
+                {
+                    logger.logFormatted(LogLevel::ERROR, "ON MESSAGE CALL BACK Error: %s, fd() is: %d", e.what(), fd());
+                }
             }
             break;
         }
-        else if (nread == 0)        // 客户端连接已断开。
+        else if (nread == 0) // 客户端连接已断开。
         {
             closecallback();
             break;
@@ -112,8 +111,8 @@ void Connection::writecallback()
     // 尝试把发送缓冲区的数据全部发出去
     int writen = ::send(fd(), outputbuffer_.data(), outputbuffer_.size(), 0);
     if (writen > 0)
-        outputbuffer_.erase(0, writen);     // 从outputbuffer_中删除已成功发送的字节数
-    
+        outputbuffer_.erase(0, writen); // 从outputbuffer_中删除已成功发送的字节数
+
     // 如果数据已经全部发送，不再关注写事件
     if (outputbuffer_.size() == 0)
     {
@@ -154,22 +153,28 @@ void Connection::send(const char *data, size_t sz)
         logger.log(LogLevel::WARNING, "客户端连接已断开。。。send()直接返回。");
         return;
     }
-
-    // 因为数据要发送给其它线程处理，所以，把它包装成智能指针
-    std::shared_ptr<std::string> message(new std::string(data));
-
-    // 判断当前线程是否为事件循环线程（IO线程）
-    if (loop_->isinloopthread())
+    try
     {
-        // 如果是IO线程，直接执行发送数据的操作
-        // logger.log(LogLevel::INFO,"send()在事件循环(IO)的线程中" );
-        sendinloop(message);
+        // 因为数据要发送给其它线程处理，所以，把它包装成智能指针
+        std::shared_ptr<std::string> message = std::make_shared<std::string>(data);
+
+        // 判断当前线程是否为事件循环线程（IO线程）
+        if (loop_->isinloopthread())
+        {
+            // 如果是IO线程，直接执行发送数据的操作
+            // logger.log(LogLevel::INFO,"send()在事件循环(IO)的线程中" );
+            sendinloop(message);
+        }
+        else
+        {
+            // 如果当前线程不是IO线程，调用EventLoop::queueinloop()，把sendinloop()交给事件循环线程去执行
+            // logger.log(LogLevel::INFO,"send()不在事件循环(IO)的线程中" );
+            loop_->queueinloop(std::bind(&Connection::sendinloop, this, message));
+        }
     }
-    else
+    catch (const std::exception &e)
     {
-        // 如果当前线程不是IO线程，调用EventLoop::queueinloop()，把sendinloop()交给事件循环线程去执行
-        // logger.log(LogLevel::INFO,"send()不在事件循环(IO)的线程中" );
-        loop_->queueinloop(std::bind(&Connection::sendinloop, this, message));
+        logger.logFormatted(LogLevel::ERROR, "SEND TO THREAD Error: %s", e.what());
     }
 }
 

@@ -9,7 +9,7 @@
 #include <sys/syscall.h>
 #include <sys/eventfd.h>
 #include <sys/timerfd.h> // 定时器需要包含这个头文件
-#include <unordered_map>
+#include <map>
 #include <atomic>
 #include "Connection.h"
 #include "Logger.h"
@@ -41,7 +41,7 @@ private:
     std::queue<std::function<void()>> taskqueue_; // 事件循环线程被eventfd唤醒后执行的任务队列
     std::mutex mutex_;                            // 任务队列同步的互斥锁
 
-    std::unordered_map<int, spConnection> conns_; // map容器，存放connection对象，{fd: conn}，代表当前放在epoll红黑树中的conn
+    std::map<int, spConnection> conns_; // map容器，存放connection对象，{fd: conn}，代表当前放在epoll红黑树中的conn
     std::mutex mmutex_;                           // 保护conns_的互斥锁
 
     std::function<void(int)> timercallback_;                // 定时器超时回调

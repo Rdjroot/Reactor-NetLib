@@ -29,7 +29,6 @@ private:
     std::atomic_bool stop_;                       // 在析构函数中，把stop_的值设为true，全部线程将退出
     const std::string threadtype_;                // 标记线程的种类："IO","WORKS"
 
-    std::mutex output_mutex_;   // 在打印时
 public:
     // 在构造函数中奖启动threadnum个线程
     ThreadPool(size_t threadnum,const std::string& threadtype);

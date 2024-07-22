@@ -1,0 +1,52 @@
+2024-07-22 23:40:11 [WARNING] create thread ,id is -1499466176.
+2024-07-22 23:40:11 [WARNING] create thread ,id is -1507858880.
+2024-07-22 23:40:11 [WARNING] create thread ,id is -1610615232.
+2024-07-22 23:40:11 [WARNING] create thread ,id is -1533036992.
+2024-07-22 23:40:11 [WARNING] create thread ,id is -1644186048.
+2024-07-22 23:40:11 [WARNING] create thread ,id is -1619007936.
+2024-07-22 23:40:11 [WARNING] create thread ,id is -1652578752.
+2024-07-22 23:40:11 [WARNING] create thread ,id is -1627400640.
+2024-07-22 23:40:11 [WARNING] create thread ,id is -1660971456.
+2024-07-22 23:40:11 [WARNING] create thread ,id is -1635793344.
+2024-07-22 23:40:11 [WARNING] create thread ,id is -2021661120.
+2024-07-22 23:40:11 [WARNING] create thread ,id is -2030053824.
+2024-07-22 23:40:11 [WARNING] create thread ,id is -2013268416.
+2024-07-22 23:40:11 [WARNING] create thread ,id is -1516251584.
+2024-07-22 23:40:11 [WARNING] create thread ,id is -1524644288.
+2024-07-22 23:40:11 [WARNING] 服务端程序开始启动。
+2024-07-22 23:40:14 [WARNING] accept client(fd=38, ip=192.168.8.128, port=34524) ok.
+2024-07-22 23:40:14 [WARNING] accept client(fd=39, ip=192.168.8.128, port=34568) ok.
+2024-07-22 23:40:14 [WARNING] accept client(fd=40, ip=192.168.8.128, port=34584) ok.
+2024-07-22 23:40:14 [ERROR] ON MESSAGE CALL BACK Error: bad_weak_ptr, fd() is: 41
+2024-07-22 23:40:14 [WARNING] accept client(fd=41, ip=192.168.8.128, port=34596) ok.
+2024-07-22 23:40:14 [WARNING] accept client(fd=42, ip=192.168.8.128, port=34606) ok.
+2024-07-22 23:40:21 [WARNING] client(eventfd=38) disconnected.
+2024-07-22 23:40:21 [WARNING] client(eventfd=40) disconnected.
+2024-07-22 23:40:21 [WARNING] client(eventfd=39) disconnected.
+2024-07-22 23:40:21 [WARNING] client(eventfd=42) disconnected.
+2024-07-22 23:40:26 [WARNING] Connection is over . fd is: 41
+2024-07-22 23:40:36 [WARNING] Connection is over . fd is: 42
+2024-07-22 23:40:36 [WARNING] Connection is over . fd is: 40
+2024-07-22 23:40:36 [WARNING] Connection is over . fd is: 39
+2024-07-22 23:40:36 [WARNING] Connection is over . fd is: 38
+2024-07-22 23:42:59 [WARNING] sig=2
+2024-07-22 23:42:59 [WARNING] delete thread ,id is -1652578752.
+2024-07-22 23:42:59 [WARNING] delete thread ,id is -1660971456.
+2024-07-22 23:42:59 [WARNING] delete thread ,id is -2013268416.
+2024-07-22 23:42:59 [WARNING] delete thread ,id is -2021661120.
+2024-07-22 23:42:59 [WARNING] delete thread ,id is -2030053824.
+2024-07-22 23:42:59 [WARNING] 工作线程已停止.
+2024-07-22 23:42:59 [WARNING] 主事件循环已停止
+2024-07-22 23:42:59 [WARNING] 从事件循环已停止
+2024-07-22 23:42:59 [WARNING] delete thread ,id is -1499466176.
+2024-07-22 23:42:59 [WARNING] delete thread ,id is -1507858880.
+2024-07-22 23:42:59 [WARNING] delete thread ,id is -1610615232.
+2024-07-22 23:42:59 [WARNING] delete thread ,id is -1516251584.
+2024-07-22 23:42:59 [WARNING] delete thread ,id is -1524644288.
+2024-07-22 23:42:59 [WARNING] delete thread ,id is -1533036992.
+2024-07-22 23:42:59 [WARNING] delete thread ,id is -1619007936.
+2024-07-22 23:42:59 [WARNING] delete thread ,id is -1627400640.
+2024-07-22 23:42:59 [WARNING] delete thread ,id is -1635793344.
+2024-07-22 23:42:59 [WARNING] delete thread ,id is -1644186048.
+2024-07-22 23:42:59 [WARNING] IO线程池停止
+2024-07-22 23:42:59 [WARNING] echoserver 已停止服务

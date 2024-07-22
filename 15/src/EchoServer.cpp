@@ -82,7 +82,7 @@ void EchoServer::HandleMessage(spConnection conn, std::string &message)
 
 void EchoServer::OnMessage(spConnection conn, std::string &message)
 {
-    message = "reply " + message;
+    message = "reply: " + message;
     conn->send(message.data(), message.size()); // 把数据发送出去
 }
 

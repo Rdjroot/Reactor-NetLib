@@ -10,7 +10,7 @@
 #include "Logger.h"
 #include <unistd.h>
 #include <string>
-#include <unordered_map>
+#include <map>
 #include <vector>
 #include <memory>
 #include <mutex>
@@ -27,7 +27,7 @@ private:
     int threadnum_;                                    // 线程池大小
     ThreadPool threadpool_;                            // 线程池
     std::mutex mutex_;                                 // conns_的互斥锁
-    std::unordered_map<int, spConnection> conns_;      // 一个TcpServer有多个Connection对象
+    std::map<int, spConnection> conns_;      // 一个TcpServer有多个Connection对象
 
     std::function<void(spConnection)> newconnectioncb_;                   // 回调EchoServer::HandleNewConnection()。
     std::function<void(spConnection)> closeconnectioncb_;                 // 回调EchoServer::HandleClose()。
