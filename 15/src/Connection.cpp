@@ -11,7 +11,7 @@ Connection::Connection(EventLoop *loop, std::unique_ptr<Socket> clientsock)
     clientchannel_->setclosecallback(std::bind(&Connection::closecallback, this));
     clientchannel_->seterrorcallback(std::bind(&Connection::errorcallback, this));
     clientchannel_->setwritecallback(std::bind(&Connection::writecallback, this));
-    // clientchannel_->useet();         // 设置边缘触发，
+    clientchannel_->useet(); // 设置边缘触发，
     clientchannel_->enablereading(); // 将新的客户端fd的读事件添加到epoll中
 }
 
@@ -95,6 +95,8 @@ void Connection::closecallback()
 {
     disconnect_ = true;
     clientchannel_->remove(); // 从红黑树上卸掉该socketfd
+    // 错误的socket没有到达这里
+    // logger.logFormatted(LogLevel::WARNING, "CONNECTION CLOSE client(eventfd=%d) error.", fd());
     closecallback_(shared_from_this());
 }
 
@@ -103,6 +105,7 @@ void Connection::errorcallback()
 {
     disconnect_ = true;
     clientchannel_->remove(); // 从事件循环中删除该channel
+    // logger.logFormatted(LogLevel::WARNING, "CONNECTION ERROR client(eventfd=%d) error.", fd());
     errorcallback_(shared_from_this());
 }
 

@@ -55,9 +55,12 @@ void TcpServer::newconnection(std::unique_ptr<Socket> clientsock)
 {
     try
     {
+        int tmpfd = clientsock->fd();
+        logger.logFormatted(LogLevel::WARNING, "Before construct spConnection %d", tmpfd);
         // 创建新的Connection实例，并且给新建的conn绑定事件循环
         spConnection conn(new Connection(subloops_[clientsock->fd() % threadnum_].get(), std::move(clientsock)));
-
+        logger.logFormatted(LogLevel::WARNING, "1After construct spConnection %d", tmpfd);
+        
         // 设置断开/出错时的回调函数
         conn->setclosecallback(std::bind(&TcpServer::closeconnection, this, std::placeholders::_1));
         conn->seterrorcallback(std::bind(&TcpServer::errorconnection, this, std::placeholders::_1));

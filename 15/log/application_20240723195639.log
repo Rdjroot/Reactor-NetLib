@@ -1,0 +1,337 @@
+2024-07-23 19:56:39 [WARNING] create thread ,id is 291501632.
+2024-07-23 19:56:39 [WARNING] create thread ,id is 274716224.
+2024-07-23 19:56:39 [WARNING] create thread ,id is 241145408.
+2024-07-23 19:56:39 [WARNING] create thread ,id is 257930816.
+2024-07-23 19:56:39 [WARNING] (257930816)thread execute task.
+2024-07-23 19:56:39 [WARNING] (274716224)thread execute task.
+2024-07-23 19:56:39 [WARNING] (241145408)thread execute task.
+2024-07-23 19:56:39 [WARNING] create thread ,id is 283108928.
+2024-07-23 19:56:39 [WARNING] (283108928)thread execute task.
+2024-07-23 19:56:39 [WARNING] create thread ,id is 134215232.
+2024-07-23 19:56:39 [WARNING] (134215232)thread execute task.
+2024-07-23 19:56:39 [WARNING] (291501632)thread execute task.
+2024-07-23 19:56:39 [WARNING] create thread ,id is 266323520.
+2024-07-23 19:56:39 [WARNING] (266323520)thread execute task.
+2024-07-23 19:56:39 [WARNING] 服务端程序开始启动。
+2024-07-23 19:56:39 [WARNING] create thread ,id is 232752704.
+2024-07-23 19:56:39 [WARNING] (232752704)thread execute task.
+2024-07-23 19:56:39 [WARNING] create thread ,id is 224360000.
+2024-07-23 19:56:39 [WARNING] (224360000)thread execute task.
+2024-07-23 19:56:39 [WARNING] create thread ,id is 249538112.
+2024-07-23 19:56:39 [WARNING] (249538112)thread execute task.
+2024-07-23 19:56:41 [WARNING] accept client(fd=38, ip=192.168.8.128, port=41938) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=39, ip=192.168.8.128, port=41944) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=40, ip=192.168.8.128, port=41960) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=41, ip=192.168.8.128, port=41970) ok.
+2024-07-23 19:56:41 [ERROR] ON MESSAGE CALL BACK Error: bad_weak_ptr, fd() is: 42
+2024-07-23 19:56:41 [WARNING] accept client(fd=42, ip=192.168.8.128, port=41986) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=43, ip=192.168.8.128, port=41994) ok.
+2024-07-23 19:56:41 [WARNING] client(eventfd=38) disconnected.
+2024-07-23 19:56:41 [WARNING] accept client(fd=44, ip=192.168.8.128, port=42008) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=45, ip=192.168.8.128, port=42018) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=46, ip=192.168.8.128, port=42026) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=47, ip=192.168.8.128, port=42028) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=48, ip=192.168.8.128, port=42042) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=49, ip=192.168.8.128, port=42050) ok.
+2024-07-23 19:56:41 [WARNING] client(eventfd=39) disconnected.
+2024-07-23 19:56:41 [WARNING] accept client(fd=50, ip=192.168.8.128, port=42058) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=51, ip=192.168.8.128, port=42066) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=52, ip=192.168.8.128, port=42078) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=53, ip=192.168.8.128, port=42086) ok.
+2024-07-23 19:56:41 [WARNING] client(eventfd=40) disconnected.
+2024-07-23 19:56:41 [WARNING] accept client(fd=54, ip=192.168.8.128, port=42096) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=55, ip=192.168.8.128, port=42098) ok.
+2024-07-23 19:56:41 [WARNING] client(eventfd=41) disconnected.
+2024-07-23 19:56:41 [WARNING] accept client(fd=56, ip=192.168.8.128, port=42104) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=57, ip=192.168.8.128, port=42114) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=58, ip=192.168.8.128, port=42120) ok.
+2024-07-23 19:56:41 [WARNING] client(eventfd=43) disconnected.
+2024-07-23 19:56:41 [WARNING] accept client(fd=59, ip=192.168.8.128, port=42136) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=60, ip=192.168.8.128, port=42150) ok.
+2024-07-23 19:56:41 [WARNING] client(eventfd=52) disconnected.
+2024-07-23 19:56:41 [WARNING] accept client(fd=61, ip=192.168.8.128, port=42156) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=62, ip=192.168.8.128, port=42166) ok.
+2024-07-23 19:56:41 [WARNING] client(eventfd=49) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=44) disconnected.
+2024-07-23 19:56:41 [WARNING] accept client(fd=63, ip=192.168.8.128, port=42170) ok.
+2024-07-23 19:56:41 [WARNING] client(eventfd=56) disconnected.
+2024-07-23 19:56:41 [WARNING] accept client(fd=64, ip=192.168.8.128, port=42178) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=65, ip=192.168.8.128, port=42182) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=66, ip=192.168.8.128, port=42188) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=67, ip=192.168.8.128, port=42186) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=68, ip=192.168.8.128, port=42198) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=69, ip=192.168.8.128, port=42200) ok.
+2024-07-23 19:56:41 [WARNING] client(eventfd=50) disconnected.
+2024-07-23 19:56:41 [WARNING] accept client(fd=70, ip=192.168.8.128, port=42206) ok.
+2024-07-23 19:56:41 [WARNING] client(eventfd=46) disconnected.
+2024-07-23 19:56:41 [WARNING] accept client(fd=71, ip=192.168.8.128, port=42218) ok.
+2024-07-23 19:56:41 [WARNING] client(eventfd=53) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=55) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=47) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=57) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=51) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=70) disconnected.
+2024-07-23 19:56:41 [WARNING] accept client(fd=72, ip=192.168.8.128, port=42234) ok.
+2024-07-23 19:56:41 [WARNING] client(eventfd=63) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=58) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=45) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=60) disconnected.
+2024-07-23 19:56:41 [WARNING] accept client(fd=73, ip=192.168.8.128, port=42238) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=74, ip=192.168.8.128, port=42254) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=75, ip=192.168.8.128, port=42266) ok.
+2024-07-23 19:56:41 [WARNING] client(eventfd=48) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=66) disconnected.
+2024-07-23 19:56:41 [WARNING] accept client(fd=76, ip=192.168.8.128, port=42270) ok.
+2024-07-23 19:56:41 [WARNING] client(eventfd=65) disconnected.
+2024-07-23 19:56:41 [WARNING] accept client(fd=77, ip=192.168.8.128, port=42274) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=78, ip=192.168.8.128, port=42280) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=79, ip=192.168.8.128, port=42294) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=80, ip=192.168.8.128, port=42310) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=81, ip=192.168.8.128, port=42312) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=82, ip=192.168.8.128, port=42326) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=83, ip=192.168.8.128, port=42336) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=84, ip=192.168.8.128, port=42338) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=85, ip=192.168.8.128, port=42348) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=86, ip=192.168.8.128, port=42354) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=87, ip=192.168.8.128, port=42362) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=88, ip=192.168.8.128, port=42368) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=89, ip=192.168.8.128, port=42370) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=90, ip=192.168.8.128, port=42376) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=91, ip=192.168.8.128, port=42378) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=92, ip=192.168.8.128, port=42392) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=93, ip=192.168.8.128, port=42394) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=94, ip=192.168.8.128, port=42402) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=95, ip=192.168.8.128, port=42408) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=96, ip=192.168.8.128, port=42412) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=97, ip=192.168.8.128, port=42424) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=98, ip=192.168.8.128, port=42428) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=99, ip=192.168.8.128, port=42436) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=100, ip=192.168.8.128, port=42444) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=101, ip=192.168.8.128, port=42460) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=102, ip=192.168.8.128, port=42462) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=103, ip=192.168.8.128, port=42472) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=104, ip=192.168.8.128, port=42478) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=105, ip=192.168.8.128, port=42480) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=106, ip=192.168.8.128, port=42506) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=107, ip=192.168.8.128, port=42520) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=108, ip=192.168.8.128, port=42526) ok.
+2024-07-23 19:56:41 [WARNING] client(eventfd=85) disconnected.
+2024-07-23 19:56:41 [WARNING] accept client(fd=109, ip=192.168.8.128, port=42540) ok.
+2024-07-23 19:56:41 [WARNING] client(eventfd=93) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=75) disconnected.
+2024-07-23 19:56:41 [WARNING] accept client(fd=110, ip=192.168.8.128, port=42552) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=111, ip=192.168.8.128, port=42568) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=112, ip=192.168.8.128, port=42576) ok.
+2024-07-23 19:56:41 [WARNING] client(eventfd=54) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=78) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=68) disconnected.
+2024-07-23 19:56:41 [WARNING] accept client(fd=113, ip=192.168.8.128, port=42586) ok.
+2024-07-23 19:56:41 [WARNING] client(eventfd=62) disconnected.
+2024-07-23 19:56:41 [WARNING] accept client(fd=114, ip=192.168.8.128, port=42594) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=115, ip=192.168.8.128, port=42600) ok.
+2024-07-23 19:56:41 [WARNING] client(eventfd=83) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=90) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=80) disconnected.
+2024-07-23 19:56:41 [WARNING] accept client(fd=116, ip=192.168.8.128, port=42608) ok.
+2024-07-23 19:56:41 [WARNING] client(eventfd=77) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=61) disconnected.
+2024-07-23 19:56:41 [WARNING] accept client(fd=117, ip=192.168.8.128, port=42614) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=118, ip=192.168.8.128, port=42622) ok.
+2024-07-23 19:56:41 [WARNING] client(eventfd=110) disconnected.
+2024-07-23 19:56:41 [WARNING] accept client(fd=119, ip=192.168.8.128, port=42634) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=120, ip=192.168.8.128, port=42644) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=121, ip=192.168.8.128, port=42660) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=122, ip=192.168.8.128, port=42668) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=123, ip=192.168.8.128, port=42670) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=124, ip=192.168.8.128, port=42682) ok.
+2024-07-23 19:56:41 [WARNING] client(eventfd=98) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=101) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=71) disconnected.
+2024-07-23 19:56:41 [WARNING] accept client(fd=125, ip=192.168.8.128, port=42696) ok.
+2024-07-23 19:56:41 [WARNING] client(eventfd=88) disconnected.
+2024-07-23 19:56:41 [WARNING] accept client(fd=126, ip=192.168.8.128, port=42706) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=127, ip=192.168.8.128, port=42714) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=128, ip=192.168.8.128, port=42728) ok.
+2024-07-23 19:56:41 [WARNING] client(eventfd=97) disconnected.
+2024-07-23 19:56:41 [WARNING] accept client(fd=129, ip=192.168.8.128, port=42742) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=130, ip=192.168.8.128, port=42752) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=131, ip=192.168.8.128, port=42760) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=132, ip=192.168.8.128, port=42764) ok.
+2024-07-23 19:56:41 [WARNING] client(eventfd=87) disconnected.
+2024-07-23 19:56:41 [WARNING] accept client(fd=133, ip=192.168.8.128, port=42778) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=134, ip=192.168.8.128, port=42794) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=135, ip=192.168.8.128, port=42804) ok.
+2024-07-23 19:56:41 [WARNING] accept client(fd=136, ip=192.168.8.128, port=42818) ok.
+2024-07-23 19:56:41 [WARNING] client(eventfd=81) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=67) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=86) disconnected.
+2024-07-23 19:56:41 [WARNING] accept client(fd=137, ip=192.168.8.128, port=42834) ok.
+2024-07-23 19:56:41 [WARNING] client(eventfd=108) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=103) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=79) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=95) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=73) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=111) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=128) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=131) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=107) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=109) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=84) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=100) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=69) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=102) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=121) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=113) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=91) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=92) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=127) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=112) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=99) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=82) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=115) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=120) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=59) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=118) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=125) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=122) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=89) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=130) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=119) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=129) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=116) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=137) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=94) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=117) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=105) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=132) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=96) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=64) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=123) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=106) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=104) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=72) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=76) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=74) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=133) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=124) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=126) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=135) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=136) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=114) disconnected.
+2024-07-23 19:56:41 [WARNING] client(eventfd=134) disconnected.
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 132
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 134
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 122
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 112
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 130
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 102
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 120
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 110
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 100
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 90
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 80
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 133
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 123
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 113
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 103
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 93
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 83
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 73
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 63
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 53
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 43
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 131
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 135
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 136
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 92
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 82
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 129
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 72
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 62
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 52
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 42
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 121
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 125
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 126
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 116
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 106
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 137
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 96
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 124
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 114
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 111
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 115
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 105
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 119
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 86
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 76
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 66
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 56
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 46
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 128
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 118
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 108
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 98
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 70
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 104
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 94
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 84
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 74
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 127
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 88
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 78
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 68
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 95
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 109
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 64
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 117
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 60
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 101
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 58
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 85
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 99
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 89
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 107
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 50
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 91
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 81
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 71
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 54
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 79
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 97
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 40
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 48
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 38
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 61
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 44
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 69
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 59
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 75
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 51
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 87
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 49
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 65
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 41
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 77
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 39
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 55
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 67
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 45
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 57
+2024-07-23 19:56:54 [WARNING] Connection is over . fd is: 47
+2024-07-23 20:29:52 [WARNING] sig=2
+2024-07-23 20:29:52 [WARNING] 工作线程已停止.
+2024-07-23 20:29:52 [WARNING] 主事件循环已停止
+2024-07-23 20:29:52 [WARNING] 从事件循环已停止
+2024-07-23 20:29:52 [WARNING] delete thread ,id is 291501632.
+2024-07-23 20:29:52 [WARNING] delete thread ,id is 283108928.
+2024-07-23 20:29:52 [WARNING] delete thread ,id is 274716224.
+2024-07-23 20:29:52 [WARNING] delete thread ,id is 266323520.
+2024-07-23 20:29:52 [WARNING] delete thread ,id is 134215232.
+2024-07-23 20:29:52 [WARNING] delete thread ,id is 257930816.
+2024-07-23 20:29:52 [WARNING] delete thread ,id is 249538112.
+2024-07-23 20:29:52 [WARNING] delete thread ,id is 241145408.
+2024-07-23 20:29:52 [WARNING] delete thread ,id is 232752704.
+2024-07-23 20:29:52 [WARNING] delete thread ,id is 224360000.
+2024-07-23 20:29:52 [WARNING] IO线程池停止
+2024-07-23 20:29:52 [WARNING] echoserver 已停止服务
