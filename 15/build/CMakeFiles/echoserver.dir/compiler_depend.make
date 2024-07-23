@@ -334,14 +334,14 @@ CMakeFiles/echoserver.dir/echoserver.cpp.o: ../echoserver.cpp \
   /usr/include/c++/11/atomic \
   ../include/Connection.h \
   ../include/Buffer.h \
-  ../include/Timestamp.h \
-  ../include/Epoll.h \
-  /usr/include/c++/11/stdlib.h \
   /usr/include/c++/11/cstring \
   /usr/include/string.h \
   /usr/include/strings.h \
   /usr/include/x86_64-linux-gnu/bits/strings_fortified.h \
   /usr/include/x86_64-linux-gnu/bits/string_fortified.h \
+  ../include/Timestamp.h \
+  ../include/Epoll.h \
+  /usr/include/c++/11/stdlib.h \
   ../include/Acceptor.h \
   ../include/ThreadPool.h \
   /usr/include/c++/11/thread \
@@ -662,14 +662,14 @@ CMakeFiles/echoserver.dir/src/Acceptor.cpp.o: ../src/Acceptor.cpp \
   /usr/include/c++/11/atomic \
   ../include/Connection.h \
   ../include/Buffer.h \
-  ../include/Timestamp.h \
-  ../include/Epoll.h \
-  /usr/include/c++/11/stdlib.h \
   /usr/include/c++/11/cstring \
   /usr/include/string.h \
   /usr/include/strings.h \
   /usr/include/x86_64-linux-gnu/bits/strings_fortified.h \
-  /usr/include/x86_64-linux-gnu/bits/string_fortified.h
+  /usr/include/x86_64-linux-gnu/bits/string_fortified.h \
+  ../include/Timestamp.h \
+  ../include/Epoll.h \
+  /usr/include/c++/11/stdlib.h
 
 CMakeFiles/echoserver.dir/src/Buffer.cpp.o: ../src/Buffer.cpp \
   /usr/include/stdc-predef.h \
@@ -826,35 +826,11 @@ CMakeFiles/echoserver.dir/src/Buffer.cpp.o: ../src/Buffer.cpp \
   /usr/include/c++/11/bits/functional_hash.h \
   /usr/include/c++/11/bits/hash_bytes.h \
   /usr/include/c++/11/bits/basic_string.tcc \
-  /usr/include/c++/11/iostream \
-  /usr/include/c++/11/ostream \
-  /usr/include/c++/11/ios \
-  /usr/include/c++/11/exception \
-  /usr/include/c++/11/bits/exception_ptr.h \
-  /usr/include/c++/11/bits/cxxabi_init_exception.h \
-  /usr/include/c++/11/typeinfo \
-  /usr/include/c++/11/bits/nested_exception.h \
-  /usr/include/c++/11/bits/ios_base.h \
-  /usr/include/c++/11/bits/locale_classes.h \
-  /usr/include/c++/11/bits/locale_classes.tcc \
-  /usr/include/c++/11/system_error \
-  /usr/include/x86_64-linux-gnu/c++/11/bits/error_constants.h \
-  /usr/include/c++/11/stdexcept \
-  /usr/include/c++/11/streambuf \
-  /usr/include/c++/11/bits/streambuf.tcc \
-  /usr/include/c++/11/bits/basic_ios.h \
-  /usr/include/c++/11/bits/locale_facets.h \
-  /usr/include/c++/11/cwctype \
-  /usr/include/wctype.h \
-  /usr/include/x86_64-linux-gnu/bits/wctype-wchar.h \
-  /usr/include/x86_64-linux-gnu/c++/11/bits/ctype_base.h \
-  /usr/include/c++/11/bits/streambuf_iterator.h \
-  /usr/include/x86_64-linux-gnu/c++/11/bits/ctype_inline.h \
-  /usr/include/c++/11/bits/locale_facets.tcc \
-  /usr/include/c++/11/bits/basic_ios.tcc \
-  /usr/include/c++/11/bits/ostream.tcc \
-  /usr/include/c++/11/istream \
-  /usr/include/c++/11/bits/istream.tcc
+  /usr/include/c++/11/cstring \
+  /usr/include/string.h \
+  /usr/include/strings.h \
+  /usr/include/x86_64-linux-gnu/bits/strings_fortified.h \
+  /usr/include/x86_64-linux-gnu/bits/string_fortified.h
 
 CMakeFiles/echoserver.dir/src/Channel.cpp.o: ../src/Channel.cpp \
   /usr/include/stdc-predef.h \
@@ -1166,14 +1142,14 @@ CMakeFiles/echoserver.dir/src/Channel.cpp.o: ../src/Channel.cpp \
   ../include/Connection.h \
   ../include/Channel.h \
   ../include/Buffer.h \
-  ../include/Timestamp.h \
-  ../include/Epoll.h \
-  /usr/include/c++/11/stdlib.h \
   /usr/include/c++/11/cstring \
   /usr/include/string.h \
   /usr/include/strings.h \
   /usr/include/x86_64-linux-gnu/bits/strings_fortified.h \
-  /usr/include/x86_64-linux-gnu/bits/string_fortified.h
+  /usr/include/x86_64-linux-gnu/bits/string_fortified.h \
+  ../include/Timestamp.h \
+  ../include/Epoll.h \
+  /usr/include/c++/11/stdlib.h
 
 CMakeFiles/echoserver.dir/src/Connection.cpp.o: ../src/Connection.cpp \
   /usr/include/stdc-predef.h \
@@ -1805,14 +1781,14 @@ CMakeFiles/echoserver.dir/src/EchoServer.cpp.o: ../src/EchoServer.cpp \
   /usr/include/c++/11/atomic \
   ../include/Connection.h \
   ../include/Buffer.h \
-  ../include/Timestamp.h \
-  ../include/Epoll.h \
-  /usr/include/c++/11/stdlib.h \
   /usr/include/c++/11/cstring \
   /usr/include/string.h \
   /usr/include/strings.h \
   /usr/include/x86_64-linux-gnu/bits/strings_fortified.h \
   /usr/include/x86_64-linux-gnu/bits/string_fortified.h \
+  ../include/Timestamp.h \
+  ../include/Epoll.h \
+  /usr/include/c++/11/stdlib.h \
   ../include/Acceptor.h \
   ../include/ThreadPool.h \
   /usr/include/c++/11/thread \
@@ -2133,13 +2109,13 @@ CMakeFiles/echoserver.dir/src/Epoll.cpp.o: ../src/Epoll.cpp \
   /usr/include/c++/11/atomic \
   ../include/Connection.h \
   ../include/Buffer.h \
-  ../include/Timestamp.h \
-  ../include/Epoll.h \
   /usr/include/c++/11/cstring \
   /usr/include/string.h \
   /usr/include/strings.h \
   /usr/include/x86_64-linux-gnu/bits/strings_fortified.h \
-  /usr/include/x86_64-linux-gnu/bits/string_fortified.h
+  /usr/include/x86_64-linux-gnu/bits/string_fortified.h \
+  ../include/Timestamp.h \
+  ../include/Epoll.h
 
 CMakeFiles/echoserver.dir/src/EventLoop.cpp.o: ../src/EventLoop.cpp \
   /usr/include/stdc-predef.h \
@@ -2451,14 +2427,14 @@ CMakeFiles/echoserver.dir/src/EventLoop.cpp.o: ../src/EventLoop.cpp \
   /usr/include/x86_64-linux-gnu/bits/epoll.h \
   ../include/EventLoop.h \
   ../include/Buffer.h \
-  ../include/Timestamp.h \
-  ../include/Epoll.h \
-  /usr/include/c++/11/stdlib.h \
   /usr/include/c++/11/cstring \
   /usr/include/string.h \
   /usr/include/strings.h \
   /usr/include/x86_64-linux-gnu/bits/strings_fortified.h \
-  /usr/include/x86_64-linux-gnu/bits/string_fortified.h
+  /usr/include/x86_64-linux-gnu/bits/string_fortified.h \
+  ../include/Timestamp.h \
+  ../include/Epoll.h \
+  /usr/include/c++/11/stdlib.h
 
 CMakeFiles/echoserver.dir/src/InetAddress.cpp.o: ../src/InetAddress.cpp \
   /usr/include/stdc-predef.h \
@@ -3484,14 +3460,14 @@ CMakeFiles/echoserver.dir/src/TcpServer.cpp.o: ../src/TcpServer.cpp \
   /usr/include/c++/11/atomic \
   ../include/Connection.h \
   ../include/Buffer.h \
-  ../include/Timestamp.h \
-  ../include/Epoll.h \
-  /usr/include/c++/11/stdlib.h \
   /usr/include/c++/11/cstring \
   /usr/include/string.h \
   /usr/include/strings.h \
   /usr/include/x86_64-linux-gnu/bits/strings_fortified.h \
   /usr/include/x86_64-linux-gnu/bits/string_fortified.h \
+  ../include/Timestamp.h \
+  ../include/Epoll.h \
+  /usr/include/c++/11/stdlib.h \
   ../include/Acceptor.h \
   ../include/ThreadPool.h \
   /usr/include/c++/11/thread \

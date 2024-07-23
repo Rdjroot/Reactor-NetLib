@@ -1,7 +1,7 @@
 #ifndef BUFFER_H_
 #define BUFFER_H_
 #include <string>
-
+#include <cstring>
 // 读写缓冲区类
 class Buffer
 {

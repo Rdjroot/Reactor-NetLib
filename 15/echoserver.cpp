@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     
     logger.setLogLevel(LogLevel::WARNING);
     // 服务端的地址和协议
-    echoserver = new EchoServer(argv[1], atoi(argv[2]), 5, 0);
+    echoserver = new EchoServer(argv[1], atoi(argv[2]), 10, 0);
 
     logger.log(LogLevel::WARNING, "服务端程序开始启动。");
 

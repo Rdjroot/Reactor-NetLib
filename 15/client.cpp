@@ -50,12 +50,12 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    cout << "connect ok." << endl;
-    cout << "开始时间：" << time(0) << endl;
+    // cout << "connect ok." << endl;
+    // cout << "开始时间：" << time(0) << endl;
     // 接受/发送 的数据
     string buf(1024, '\0');
 
-    for (int ii = 0; ii < 100000; ii++)
+    for (int ii = 0; ii < 100; ii++)
     {
         buf = "这是第" + std::to_string(ii) + "个超级女生。";
         string tmpbuf;
@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
     }
 
     close(sockfd);
-    cout << "结束时间：" << time(0) << endl;
+    // cout << "结束时间：" << time(0) << endl;
 
     return 0;
 }

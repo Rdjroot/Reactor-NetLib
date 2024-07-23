@@ -53,26 +53,33 @@ void TcpServer::stop()
 // 处理新的客户端连接请求
 void TcpServer::newconnection(std::unique_ptr<Socket> clientsock)
 {
-    // 创建新的Connection实例，并且给新建的conn绑定事件循环
-    spConnection conn(new Connection(subloops_[clientsock->fd() % threadnum_].get(), std::move(clientsock)));
-
-    // 设置断开/出错时的回调函数
-    conn->setclosecallback(std::bind(&TcpServer::closeconnection, this, std::placeholders::_1));
-    conn->seterrorcallback(std::bind(&TcpServer::errorconnection, this, std::placeholders::_1));
-    conn->setsendcompletecallback(std::bind(&TcpServer::sendcomplete, this, std::placeholders::_1));
-    conn->setonmessagecallback(std::bind(&TcpServer::onmessage, this, std::placeholders::_1, std::placeholders::_2));
-
+    try
     {
-        std::lock_guard<std::mutex> gd(mutex_);
-        conns_[conn->fd()] = conn; // 加入map容器
+        // 创建新的Connection实例，并且给新建的conn绑定事件循环
+        spConnection conn(new Connection(subloops_[clientsock->fd() % threadnum_].get(), std::move(clientsock)));
+
+        // 设置断开/出错时的回调函数
+        conn->setclosecallback(std::bind(&TcpServer::closeconnection, this, std::placeholders::_1));
+        conn->seterrorcallback(std::bind(&TcpServer::errorconnection, this, std::placeholders::_1));
+        conn->setsendcompletecallback(std::bind(&TcpServer::sendcomplete, this, std::placeholders::_1));
+        conn->setonmessagecallback(std::bind(&TcpServer::onmessage, this, std::placeholders::_1, std::placeholders::_2));
+
+        {
+            std::lock_guard<std::mutex> gd(mutex_);
+            conns_[conn->fd()] = conn; // 加入map容器
+        }
+
+        // 将新的conn加入事件循环的监听中
+        subloops_[conn->fd() % threadnum_]->newconnection(conn);
+
+        // 回调应用层代码EchoServer::HandleNewConnection()。
+        if (newconnectioncb_)
+            newconnectioncb_(conn);
     }
-
-    // 将新的conn加入事件循环的监听中
-    subloops_[conn->fd() % threadnum_]->newconnection(conn);
-
-    // 回调应用层代码EchoServer::HandleNewConnection()。
-    if (newconnectioncb_)
-        newconnectioncb_(conn);
+    catch (const std::exception &e)
+    {
+        logger.logFormatted(LogLevel::ERROR, "ADD new Connection Error: %s", e.what());
+    }
 }
 
 // 关闭客户端的连接，在Connection类中回调此函数。
