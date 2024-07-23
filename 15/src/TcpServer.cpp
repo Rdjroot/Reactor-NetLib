@@ -22,10 +22,14 @@ TcpServer::TcpServer(const std::string &ip, uint16_t port, int threadnum)
         // 一条线程对应一个事件循环
         threadpool_.addtask(std::bind(&EventLoop::run, subloops_[i].get()));
     }
+
+    recvInfo = 0;
 }
 
 TcpServer::~TcpServer()
 {
+    long long tmp = recvInfo;
+    logger.logFormatted(LogLevel::WARNING,"all recvInfo : %d" ,tmp);
 }
 
 // 开启服务端循环监听
@@ -56,17 +60,17 @@ void TcpServer::newconnection(std::unique_ptr<Socket> clientsock)
     try
     {
         int tmpfd = clientsock->fd();
-        logger.logFormatted(LogLevel::WARNING, "Before construct spConnection %d", tmpfd);
+        // logger.logFormatted(LogLevel::WARNING, "Before construct spConnection %d", tmpfd);
         // 创建新的Connection实例，并且给新建的conn绑定事件循环
         spConnection conn(new Connection(subloops_[clientsock->fd() % threadnum_].get(), std::move(clientsock)));
-        logger.logFormatted(LogLevel::WARNING, "1After construct spConnection %d", tmpfd);
+        // logger.logFormatted(LogLevel::WARNING, "1After construct spConnection %d", tmpfd);
         
         // 设置断开/出错时的回调函数
         conn->setclosecallback(std::bind(&TcpServer::closeconnection, this, std::placeholders::_1));
         conn->seterrorcallback(std::bind(&TcpServer::errorconnection, this, std::placeholders::_1));
         conn->setsendcompletecallback(std::bind(&TcpServer::sendcomplete, this, std::placeholders::_1));
         conn->setonmessagecallback(std::bind(&TcpServer::onmessage, this, std::placeholders::_1, std::placeholders::_2));
-
+        
         {
             std::lock_guard<std::mutex> gd(mutex_);
             conns_[conn->fd()] = conn; // 加入map容器
@@ -113,6 +117,7 @@ void TcpServer::errorconnection(spConnection conn)
 // 处理客户端的请求报文，在Connection类中回调此函数
 void TcpServer::onmessage(spConnection conn, std::string &message)
 {
+    recvInfo++;
     // 回调EchoServer::HandleMessage()。
     if (onmessagecb_)
         onmessagecb_(conn, message);

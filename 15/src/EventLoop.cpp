@@ -22,7 +22,7 @@ EventLoop::EventLoop(bool mainloop, int timeval, int timeout)
 {
     // 设置读事件
     wakechannel_->setreadcallback(std::bind(&EventLoop::handlewakeup, this));
-    wakechannel_->enablereading(); // 注册读事件，只要事件循环被环迅，就會調用handlewakeup
+    wakechannel_->enablereading(); // 注册读事件，只要事件循环被啟動，就會調用handlewakeup
 
     timerchannel_->setreadcallback(std::bind(&EventLoop::handletimer, this));
     timerchannel_->enablereading();

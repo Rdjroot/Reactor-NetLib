@@ -4,21 +4,22 @@
 // 为新客户端连接准备读事件和属性设置，并添加到epoll中。
 Connection::Connection(EventLoop *loop, std::unique_ptr<Socket> clientsock)
     : loop_(loop), clientsock_(std::move(clientsock)),
-      clientchannel_(new Channel(loop_, clientsock_->fd())), disconnect_(false)
+      clientchannel_(new Channel(loop_, clientsock_->fd())),
+      disconnect_(false), flag_(false)
 {
-    // 绑定回调函数
     clientchannel_->setreadcallback(std::bind(&Connection::onmessage, this));
     clientchannel_->setclosecallback(std::bind(&Connection::closecallback, this));
     clientchannel_->seterrorcallback(std::bind(&Connection::errorcallback, this));
     clientchannel_->setwritecallback(std::bind(&Connection::writecallback, this));
-    clientchannel_->useet(); // 设置边缘触发，
+    clientchannel_->useet();         // 设置边缘触发，
     clientchannel_->enablereading(); // 将新的客户端fd的读事件添加到epoll中
+    flag_ = true;
 }
 
 Connection::~Connection()
 {
     // std::cout << "conn已析构" << std::endl;
-    logger.logFormatted(LogLevel::WARNING, "Connection is over . fd is: %d", fd());
+    // logger.logFormatted(LogLevel::WARNING, "Connection is over . fd is: %d", fd());
 }
 
 // 返回客户端的fd
@@ -72,6 +73,11 @@ void Connection::onmessage()
 
                 try
                 {
+                    // 啥也不說了，我是天才
+                    while (!flag_)
+                    {
+                        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+                    }
                     // 将拆出的报文进行计算，并返回数据
                     onmessagecallback_(shared_from_this(), message); // 回调TcpServer::onmessage()处理客户端的请求消息
                 }

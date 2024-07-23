@@ -12,6 +12,7 @@
 #include <sys/syscall.h>
 #include "Timestamp.h"
 #include "Logger.h"
+#include<thread>
 
 class EventLoop;
 class Channel;
@@ -31,6 +32,8 @@ private:
     Buffer outputbuffer_;                    // 发送缓冲区
     std::atomic_bool disconnect_;            // 客户端是否已断开，如果已断开，设为true
     Timestamp lastime_;                      // 时间戳，创建 Connection时为当前时间，每接收到一个报文，把时间戳更新为当前时间
+
+    bool flag_;
 
     std::function<void(spConnection)> closecallback_;                    // 关闭fd_的回调函数，将回调TcpServer::closeconnection()
     std::function<void(spConnection)> errorcallback_;                    // fd_发生了错误的回调函数，将回调TcpServer::errorconnection()
@@ -59,7 +62,7 @@ public:
     void sendinloop(std::shared_ptr<std::string> data); // 发送数据的具体实现。如果是IO，直接使用，如果是工作线程，将此函数传递给IO线程
 
     bool timeout(time_t now, int val); // 判断TCP连接是否超时（空闲太久）
-    void addlistenread();
+    void addlistenread();               // 創建Channel對象
 };
 
 #endif

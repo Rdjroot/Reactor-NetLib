@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     // 接受/发送 的数据
     string buf(1024, '\0');
 
-    for (int ii = 0; ii < 100; ii++)
+    for (int ii = 0; ii < 10000; ii++)
     {
         buf = "这是第" + std::to_string(ii) + "个超级女生。";
         string tmpbuf;
