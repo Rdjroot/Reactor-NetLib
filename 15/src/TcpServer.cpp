@@ -88,7 +88,6 @@ void TcpServer::closeconnection(spConnection conn)
     // 回调业务层实现
     if (closeconnectioncb_)
         closeconnectioncb_(conn);
-
     {
         std::lock_guard<std::mutex> gd(mutex_);
         // 关闭该客户端的fd。

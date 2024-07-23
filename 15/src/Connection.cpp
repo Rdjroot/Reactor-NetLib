@@ -11,7 +11,7 @@ Connection::Connection(EventLoop *loop, std::unique_ptr<Socket> clientsock)
     clientchannel_->setclosecallback(std::bind(&Connection::closecallback, this));
     clientchannel_->seterrorcallback(std::bind(&Connection::errorcallback, this));
     clientchannel_->setwritecallback(std::bind(&Connection::writecallback, this));
-    clientchannel_->useet();         // 设置边缘触发，
+    // clientchannel_->useet();         // 设置边缘触发，
     clientchannel_->enablereading(); // 将新的客户端fd的读事件添加到epoll中
 }
 
