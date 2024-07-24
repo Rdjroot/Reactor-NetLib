@@ -5,7 +5,7 @@
  * ip  服务端ip
  * port 服务端端口
  * subthreadnum 子线程（主要用于IO，处理已连接的客户端报文传输与请求）
- * workthreanum 工作线程（处理业务内容）
+ * workthreanum 工作线程（处理业务内容，对接受数据进行计算并返回）
  */
 EchoServer::EchoServer(const std::string &ip, uint16_t port, int subthreadnum, int workthreadnum)
     : tcpserver_(ip, port, subthreadnum), threadpool_(workthreadnum, "WORKS")
@@ -82,6 +82,7 @@ void EchoServer::HandleMessage(spConnection conn, std::string &message)
 
 void EchoServer::OnMessage(spConnection conn, std::string &message)
 {
+    // 模拟处理业务
     message = "reply " + message;
     conn->send(message.data(), message.size()); // 把数据发送出去
 }

@@ -35,7 +35,7 @@ ThreadPool::ThreadPool(size_t threadnum, const std::string &threadtype)
                     this->taskqueue_.pop();
                 }
 
-                logger.logFormatted(LogLevel::WARNING, "(%d)thread execute task.",std::this_thread::get_id());
+                // logger.logFormatted(LogLevel::WARNING, "(%d)thread execute task.",std::this_thread::get_id());
                 task();     // 执行任务
             } });
     }
@@ -71,7 +71,7 @@ void ThreadPool::stop()
     {
         auto id = th.get_id();
         th.join();
-        logger.logFormatted(LogLevel::WARNING, "delete thread ,id is %d.", id);
+        // logger.logFormatted(LogLevel::WARNING, "delete thread ,id is %d.", id);
     }
 }
 
