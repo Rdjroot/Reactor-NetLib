@@ -8,6 +8,10 @@
 
 本网络库能够解耦网络和业务模块代码，便于扩展和维护。
 
+![model](https://raw.githubusercontent.com/Rdjroot/Img_beds/master/img/202407251205543.png)
+
+<center>主从Reactor模型</center>
+
 ## 主要特性
 
 1. **高并发网络服务**：采用epoll进行IO多路复用，支持水平触发和边缘触发、支持高并发连接，保证了网络服务的高效性和稳定性。
