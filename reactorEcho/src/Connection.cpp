@@ -172,13 +172,13 @@ void Connection::send(const char *data, size_t sz)
         if (loop_->isinloopthread())
         {
             // 如果是IO线程，直接执行发送数据的操作
-            // logger.log(LogLevel::INFO,"send()在事件循环(IO)的线程中" );
+            logger.log(LogLevel::INFO,"send()在事件循环(IO)的线程中" );
             sendinloop(message);
         }
         else
         {
             // 如果当前线程不是IO线程，调用EventLoop::queueinloop()，把sendinloop()交给事件循环线程去执行
-            // logger.log(LogLevel::INFO,"send()不在事件循环(IO)的线程中" );
+            logger.log(LogLevel::INFO,"send()不在事件循环(IO)的线程中" );
             loop_->queueinloop(std::bind(&Connection::sendinloop, this, message));
         }
     }

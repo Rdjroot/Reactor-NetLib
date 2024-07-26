@@ -8,7 +8,7 @@
 
 本网络库能够解耦网络和业务模块代码，便于扩展和维护。
 
-![model](https://raw.githubusercontent.com/Rdjroot/Img_beds/master/img/202407251205543.png)
+![未命名文件](https://raw.githubusercontent.com/Rdjroot/Img_beds/master/img/202407251205543.png)
 
 <center>主从Reactor模型</center>
 
@@ -386,4 +386,74 @@ int main(int argc, char *argv[])
 ./client 192.168.8.128  5085&
 ./client 192.168.8.128  5085&
 ./client 192.168.8.128  5085&
+```
+
+## 自定义配置项
+
+### 1. 日志分级配置
+
+> 在主程序入口，设置最小输出日志等级
+
+```cpp
+// 有INFO WARNING ERROR三个等级
+logger.setLogLevel(LogLevel::WARNING);
+```
+
+### 2. I/O线程和工作线程数配置
+
+> 如果使用本程序中的应用层代码进行测试，则在主程序入口配置（方法一）
+>
+> 如果自行编写应用层代码，在底层入口TcpServer中进行设置（方法二）
+
+```cpp
+// 方法一：main函数中设置
+// 四个参数分别为：ip、端口、IO线程数（事件循环线程）、工作线程数量
+// 如果计算量小请设置工作线程为0，这样效率更高
+echoserver = new EchoServer(argv[1], atoi(argv[2]), 10, 0);
+
+// 方法二
+// 应用层的tcpserver成员函数，仅可以设置IO线程数，工作线程数需要在应用层代码中自行定义。
+tcpserver_(ip, port, subthreadnum)
+```
+
+### 3. 报文分隔方式
+
+> Buffer支持三种报文分隔符：
+>
+> 1、代号：`0`-无分隔符(固定长度、视频会议)
+>
+> 2、代号： `1`-四字节的报头
+>
+> 3、代号：`2`-"\r\n\r\n"分隔符（http协议）
+>
+> 根据具体的使用方式，请在Connection中的Buffer中进行，设置，默认为`1`
+
+```cpp
+// Connection.h/cpp
+// 如下所例，
+Connection::Connection(args...):...inputbuffer_(2),outputbuffer_(2)...
+```
+
+### 4. 客户端连接空闲时间判定
+
+> 在EventLoop设置，定时器默认相应间隔是30s，超时判断是80s
+
+```cpp
+// EventLoop.h/cpp
+EventLoop(bool mainloop, int timeval = 30, int timeout = 80);
+```
+
+### 5. 客户端连接边缘/水平触发配置
+
+> 在Conncetion的构造函数中设置，channel默认是水平触发，如果需要边缘触发需要单独设置。
+
+```cpp
+// 本项目中Connection默认采用边缘触发，不需要的话就删除构造函数中的边缘触发设置
+Connection::Connection(args...)
+    : ...
+{
+    ...
+    clientchannel_->useet();         // 设置边缘触发，
+	...
+}
 ```
