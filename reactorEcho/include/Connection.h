@@ -20,11 +20,16 @@ class Connection;
 extern Logger &logger;
 using spConnection = std::shared_ptr<Connection>;
 
-// 客户端Channel
+/**
+ * Connection类：封装了一个已建立的TCP连接，并进行管理
+ * 
+ * 功能：控制（建立、关闭、销毁）连接，所监听事件的处理方式，套接字信息，时间信息
+ * [一个Connection对应一个EventLoop（Epoll），一个线程池，属于Sub Reactor里的]
+ * 
+*/
 class Connection : public std::enable_shared_from_this<Connection>
 {
 private:
-    /* data */
     EventLoop *loop_;                        // Connection对应的事件循环，从构造函数传入，使用但不拥有
     std::unique_ptr<Socket> clientsock_;     // 与客户端通信的socket(外界传入，但管理其生命周期)
     std::unique_ptr<Channel> clientchannel_; // 对应的Channel，在构造函数中创建（拥有）
@@ -62,7 +67,6 @@ public:
     void sendinloop(std::shared_ptr<std::string> data); // 发送数据的具体实现。如果是IO，直接使用，如果是工作线程，将此函数传递给IO线程
 
     bool timeout(time_t now, int val); // 判断TCP连接是否超时（空闲太久）
-    void addlistenread();               // 創建Channel對象
 };
 
 #endif

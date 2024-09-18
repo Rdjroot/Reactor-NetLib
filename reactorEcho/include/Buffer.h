@@ -2,7 +2,13 @@
 #define BUFFER_H_
 #include <string>
 #include <cstring>
-// 读写缓冲区类
+
+
+/**
+ * Buffer类：封装了用户缓冲区
+ * 
+ * 功能：用于对缓冲区进行读写操作、可自定义分隔符、拆分的进行读写
+*/
 class Buffer
 {
 private:
@@ -15,7 +21,7 @@ public:
     ~Buffer();
 
     void append(const char *data, size_t size);        // 追加数据
-    void appendwithsep(const char *data, size_t size); // 把数据追加到buf)中，附加报文分隔符
+    void appendwithsep(const char *data, size_t size); // 把数据追加到buf_中，附加报文分隔符
     size_t size();                                     // 返回buf_大小
     const char *data();                                // 返回buf_的首地址
     void clear();                                      // 清空buf_

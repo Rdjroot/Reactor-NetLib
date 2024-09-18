@@ -28,7 +28,7 @@ TcpServer::TcpServer(const std::string &ip, uint16_t port, int threadnum)
 
 TcpServer::~TcpServer()
 {
-    long long tmp = recvInfo;
+    long long tmp = recvInfo;           // 统计总共处理了多少条报文
     logger.logFormatted(LogLevel::WARNING,"all recvInfo : %d" ,tmp);
 }
 
@@ -59,11 +59,9 @@ void TcpServer::newconnection(std::unique_ptr<Socket> clientsock)
 {
     try
     {
-        int tmpfd = clientsock->fd();
-        // logger.logFormatted(LogLevel::WARNING, "Before construct spConnection %d", tmpfd);
+        // 通过conn->fd() % threadnum_这样一个固定的余除数，保证同一个socket连接只会绑定同一个事件循环
         // 创建新的Connection实例，并且给新建的conn绑定事件循环
         spConnection conn(new Connection(subloops_[clientsock->fd() % threadnum_].get(), std::move(clientsock)));
-        // logger.logFormatted(LogLevel::WARNING, "1After construct spConnection %d", tmpfd);
         
         // 设置断开/出错时的回调函数
         conn->setclosecallback(std::bind(&TcpServer::closeconnection, this, std::placeholders::_1));
@@ -73,7 +71,7 @@ void TcpServer::newconnection(std::unique_ptr<Socket> clientsock)
         
         {
             std::lock_guard<std::mutex> gd(mutex_);
-            conns_[conn->fd()] = conn; // 加入map容器
+            conns_[conn->fd()] = conn;          // 加入TCP 的map容器
         }
 
         // 将新的conn加入事件循环的监听中

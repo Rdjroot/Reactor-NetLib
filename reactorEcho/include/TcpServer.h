@@ -19,6 +19,13 @@
 
 extern Logger &logger;
 
+/**
+ * TcpServer类：封装了TCP服务端
+ *  （Reactor模型网络层的中心，封装了主从事件循环）
+ * 
+ * 功能：开启监听，开启（停止）事件循环，创建并分发新连接，接收数据并面向应用层提供接口，线程池管理
+ * 
+*/
 class TcpServer
 {
 private:

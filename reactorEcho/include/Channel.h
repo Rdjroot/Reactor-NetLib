@@ -9,14 +9,18 @@
 
 class EventLoop;
 
-// 处理socket的功能性，忽视Socket的底层属性（如端口、ip、协议等）
-// 掌管处理socket事件的发生和变化(监听属性、类型等)
+/**
+ * Channel类：文件描述符（socket）的保姆，掌管处理事件的发生和变化(监听属性、类型等)
+ * 
+ * 作用：绑定回调函数、注册（取消）监听事件、记录发生的事件
+ * [Channel和Epoll是多对一的关系，一个Channel只对应一个Epoll]
+ * 
+*/
 class Channel
 {
 private:
     int fd_ = -1;     // Channel拥有的fd，Channel与fd 为一对一关系
     EventLoop *loop_; // loop_为上层传入，不属于Channel。
-                      // Channel和Epoll是多对一的关系，一个Channel只对应一个Epoll
 
     bool inepoll_ = false; // 记录Channel是否已经添加到epoll句柄中
     uint32_t events_ = 0;  // fd_需要监视的事件，listenfd和clientfd需要监视EPOLLIN，clientfd可能需要监视EPOLLOUT

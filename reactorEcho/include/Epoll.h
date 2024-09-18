@@ -14,7 +14,12 @@ extern Logger &logger;
 
 class Channel;
 
-// 封装Epoll的数据结构，掌管epoll句柄的增删和 红黑树的事件监听
+/**
+ * Epoll: 封装epoll的数据结构，掌管epoll句柄的增删和红黑树的事件监听
+ * 
+ * 作用：监听事件是否触发，返回发生事件的fd，返回具体事件
+ * [与Reactor/EpollEvent是一对一的关系，与Channel是一对多]
+*/
 class Epoll
 {
 private:

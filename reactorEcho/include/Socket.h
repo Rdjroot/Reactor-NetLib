@@ -15,8 +15,9 @@ extern Logger &logger;
 // 创建一个非阻塞的fd
 int createnonblocking();
 
-// Socket类
-// 主管Socket的属性设置和连接
+/**
+ * Socket类：封装了socket，管理属性设置及连接
+*/
 class Socket
 {
 private:

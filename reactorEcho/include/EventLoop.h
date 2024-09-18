@@ -22,7 +22,15 @@ using spConnection = std::shared_ptr<Connection>;
 
 extern Logger &logger;
 
-// 事件循环
+/**
+ * EventLoop: 事件循环类，持续循环的获取监听结果并根据结果调用处理函数
+ *      （整合封装了Epoll和Channel，向上提供更简便的接口）
+ *
+ * 功能：管理fd事件（增删改）、开启（关闭）事件循环、定时器清理空闲fd、
+ *      工作线程和IO线程交互结点（提供wakeupfd_给工作线程唤醒IO线程）
+ * 
+ * [EventLoop与Thread一对一绑定，EventLoop与EPoll也是一对一]
+*/
 class EventLoop
 {
 private:

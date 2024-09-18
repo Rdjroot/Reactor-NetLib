@@ -74,6 +74,7 @@ void Connection::onmessage()
                 try
                 {
                     // 啥也不說了，我是天才
+                    // 此时对象还没成功构造出来，需要等待一下，防止shard_from_this()返回一个空的指针
                     while (!flag_)
                     {
                         std::this_thread::sleep_for(std::chrono::milliseconds(1));
