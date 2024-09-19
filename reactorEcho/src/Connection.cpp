@@ -119,17 +119,30 @@ void Connection::errorcallback()
 // 处理写事件的回调函数，供Channel回调
 void Connection::writecallback()
 {
+    while (true) {
     // 尝试把发送缓冲区的数据全部发出去
     int writen = ::send(fd(), outputbuffer_.data(), outputbuffer_.size(), 0);
-    if (writen > 0)
+    if (writen > 0) {
         outputbuffer_.erase(0, writen); // 从outputbuffer_中删除已成功发送的字节数
-
-    // 如果数据已经全部发送，不再关注写事件
-    if (outputbuffer_.size() == 0)
-    {
-        clientchannel_->disablewriting();
-        sendcompletecallback_(shared_from_this());
+        
+        // 如果数据已经全部发送，不再关注写事件
+        if (outputbuffer_.size() == 0) {
+            clientchannel_->disablewriting();
+            sendcompletecallback_(shared_from_this());
+            break; // 发送完成，退出循环
+        }
+    } else {
+        if (errno == EAGAIN || errno == EWOULDBLOCK) {
+            // 缓冲区已满，等待下次写事件
+            break; // 退出循环
+        } else {
+            logger.log(LogLevel::ERROR,"send error.");
+            // 适当的错误处理，如关闭连接
+            closecallback();
+            break;
+        }
     }
+}
 }
 
 // 设置关闭fd_的回调函数
