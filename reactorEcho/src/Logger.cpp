@@ -7,13 +7,22 @@ Logger &Logger::getInstance()
 }
 
 // 构造函数，初始化日志级别和最大文件大小
-Logger::Logger() : logLevel(LogLevel::INFO), maxFileSize(10 * 1024 * 1024) { // 10MB
-    logDirectory = getExecutablePath() + "/../log"; // 设置日志目录为执行文件同级目录的 log 文件夹
-    openNewLogFile(); // 初始化时创建日志文件
+Logger::Logger() : logLevel(LogLevel::INFO), maxFileSize(10 * 1024 * 1024), exitLoggingThread(false)
+{
+    logDirectory = getExecutablePath() + "/../log";
+    openNewLogFile();
+    logThread = std::thread(&Logger::logThreadFunction, this); // 启动日志线程
 }
 
 Logger::~Logger()
 {
+    {
+        std::lock_guard<std::mutex> guard(logMutex);
+        exitLoggingThread = true;
+        cv.notify_all();
+    }
+    logThread.join(); // 等待日志线程结束
+
     if (logFile.is_open())
     {
         logFile.close();
@@ -21,26 +30,15 @@ Logger::~Logger()
 }
 
 // 记录日志
-void Logger::log(LogLevel level, const std::string&& message) {
-    if (level < logLevel) {
-        return;
-    }
-
-    std::lock_guard<std::mutex> guard(logMutex);
-    checkLogRotation();
-
-    std::ostringstream logStream;
-    logStream << getTimestamp() << " [" << logLevelToString(level) << "] " << message << std::endl;
-
-    if (logFile.is_open()) {
-        logFile << logStream.str();
-        logFile.flush();  // 确保立即刷新缓冲区
-    } else {
-        std::cerr << "Failed to write to log file: " << currentLogFileName << std::endl;
-        std::cout << logStream.str();
+void Logger::log(LogLevel level, const std::string&& message)
+{
+    if (level >= logLevel)
+    {
+        asyncLog(level, message);
     }
 }
 
+// 设置日志输出级别
 void Logger::setLogLevel(LogLevel level)
 {
     logLevel = level;
@@ -141,4 +139,43 @@ std::string Logger::getExecutablePath() {
         exePath = exePath.substr(0, exePath.find_last_of('/'));
     }
     return exePath;
+}
+
+// 日志线程的工作函数
+void Logger::logThreadFunction()
+{
+    while (true)
+    {
+        std::unique_lock<std::mutex> lock(logMutex);
+        cv.wait(lock, [this] { return !logQueue.empty() || exitLoggingThread; });
+
+        while (!logQueue.empty())
+        {
+            checkLogRotation();
+            if (logFile.is_open())
+            {
+                logFile << logQueue.front();
+                logFile.flush(); // 确保立即刷新
+            }
+            logQueue.pop();
+        }
+
+        if (exitLoggingThread && logQueue.empty())
+        {
+            break;
+        }
+    }
+}
+
+// 异步日志函数，将日志放入队列
+void Logger::asyncLog(LogLevel level, const std::string& message)
+{
+    std::ostringstream logStream;
+    logStream << getTimestamp() << " [" << logLevelToString(level) << "] " << message << std::endl;
+
+    {
+        std::lock_guard<std::mutex> guard(logMutex);
+        logQueue.push(logStream.str());
+    }
+    cv.notify_one(); // 通知日志线程有新的日志
 }

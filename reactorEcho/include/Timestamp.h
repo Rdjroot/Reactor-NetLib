@@ -11,7 +11,7 @@ extern Logger &logger;
 class Timestamp
 {
 private:
-    time_t secsinceepoch_; // 整数表示的事件（从1970到现在）
+    time_t secsinceepoch_; // 整数表示的时间（从1970到现在）
 
 public:
     Timestamp();                     // 用当前时间初始化对象

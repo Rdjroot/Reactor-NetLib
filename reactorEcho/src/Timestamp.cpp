@@ -14,11 +14,13 @@ Timestamp Timestamp::now()
     return Timestamp();
 }
 
+// UNIX时间戳（秒数）
 time_t Timestamp::toint() const
 {
     return secsinceepoch_;
 }
 
+// 以yyyy-mm-dd hh24:mm:ss格式输出
 std::string Timestamp::tostring() const
 {
     char buf[32] = {0};

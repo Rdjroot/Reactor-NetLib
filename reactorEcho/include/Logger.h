@@ -10,7 +10,10 @@
 #include <sstream>
 #include <sys/stat.h>
 #include <unistd.h>
-#include <limits.h> // 添加此头文件
+#include <limits.h>
+#include <thread>
+#include <queue>
+#include <condition_variable>
 
 // 日志级别
 enum class LogLevel
@@ -26,9 +29,9 @@ public:
     static Logger &getInstance();
 
     void log(LogLevel level, const std::string &&message); // 输出日志
-    void setLogLevel(LogLevel level);                      // 设置什么等级以上的日志才输出
-    void setOutputDirectory(const std::string &dir);       // 设置输出日志的目录
-    void checkLogRotation();                               // 检查日志文件是否需要轮换（满了）
+    void setLogLevel(LogLevel level);                      // 设置日志级别
+    void setOutputDirectory(const std::string &dir);       // 设置日志输出目录
+    void checkLogRotation();                               // 检查日志文件是否需要轮换
 
     // 辅助函数，用于生成格式化的日志消息
     template <typename... Args>
@@ -38,49 +41,41 @@ private:
     Logger();
     ~Logger();
 
-    std::ofstream logFile;          // 日志文件输出流
-    LogLevel logLevel;              // 当前日志级别
-    std::mutex logMutex;            // 写入互斥锁
-    std::string logDirectory;       // 日志目录
-    size_t maxFileSize;             // 单个日志文件的最大大小
-    std::string currentLogFileName; // 当前日志文件名
+    std::ofstream logFile;           // 日志文件流
+    LogLevel logLevel;               // 日志级别
+    std::mutex logMutex;             // 互斥锁保护队列
+    std::string logDirectory;        // 日志目录
+    size_t maxFileSize;              // 最大文件大小
+    std::string currentLogFileName;  // 当前日志文件名
+    std::queue<std::string> logQueue; // 日志队列
+    std::condition_variable cv;      // 条件变量
+    bool exitLoggingThread;          // 线程退出标志
+    std::thread logThread;           // 日志处理线程
+    
+    std::string getTimestamp();                     // 获取时间戳
+    std::string logLevelToString(LogLevel level);   // 日志级别转换为字符串
+    void openNewLogFile();                          // 打开新的日志文件
+    std::string generateLogFileName();              // 生成日志文件名
 
-    std::string getTimestamp();                    // 获取当前时间戳
-    std::string logLevelToString(LogLevel level);  // 将日志级别转换为字符串
-    void openNewLogFile();                         // 打开新的日志文件
-    std::string generateLogFileName();             // 生成日志文件名
-    bool directoryExists(const std::string &path); // 检查目录是否存在
-    void createDirectory(const std::string &path); // 创建目录
-    std::string getExecutablePath();               // 获取当前目录
+    bool directoryExists(const std::string &path);  // 检查目录是否存在
+    void createDirectory(const std::string &path);  // 创建日志目录
+    std::string getExecutablePath();                // 获取当前程序路径
+    void logThreadFunction();                       // 日志线程的工作函数
+    void asyncLog(LogLevel level, const std::string& message); // 异步日志函数
 };
 
-template<typename... Args>
-void Logger::logFormatted(LogLevel level, const char* format, Args&&... args) {
-    if (level < logLevel) {
+// 模板函数的实现
+template <typename... Args>
+void Logger::logFormatted(LogLevel level, const char *format, Args &&...args)
+{
+    if (level < logLevel)
+    {
         return;
     }
 
-    std::lock_guard<std::mutex> guard(logMutex);
-    checkLogRotation();
-
-    // 计算格式化后的字符串长度
-    constexpr size_t bufferSize = 1024;
-    char buffer[bufferSize];
-    int len = snprintf(buffer, bufferSize, format, std::forward<Args>(args)...);
-    if (len < 0 || len >= bufferSize) {
-        throw std::runtime_error("Log message is too long");
-    }
-
-    std::ostringstream logStream;
-    logStream << getTimestamp() << " [" << logLevelToString(level) << "] " << buffer << std::endl;
-
-    if (logFile.is_open()) {
-        logFile << logStream.str();
-        logFile.flush();  // 确保立即刷新缓冲区
-    } else {
-        std::cerr << "Failed to write to log file: " << currentLogFileName << std::endl;
-        std::cout << logStream.str();
-    }
+    char buffer[1024];
+    snprintf(buffer, sizeof(buffer), format, std::forward<Args>(args)...);
+    asyncLog(level, buffer);
 }
 
 #endif // LOGGER_H
